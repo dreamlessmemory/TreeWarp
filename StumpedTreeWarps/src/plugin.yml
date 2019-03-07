@@ -1,0 +1,11 @@
+name: StumpedTreeWarp
+version: 0.0.0-Alpha
+description: Create special trees allow players to warp
+main: com.dreamless.treewarp.TreeWarp
+api-version: 1.13
+authors: [DreamlessMemory/MemoryReborn]
+commands:
+  brewery:
+    description: Command for Administration
+    aliases: [tree, treewarps]
+permissions:
