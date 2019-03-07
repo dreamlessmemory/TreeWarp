@@ -1,5 +1,7 @@
 package com.dreamless.treewarp.listeners;
 
-public class BlockListener {
+import org.bukkit.event.Listener;
+
+public class BlockListener implements Listener {
 
 }

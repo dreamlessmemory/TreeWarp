@@ -1,5 +1,7 @@
 package com.dreamless.treewarp.listeners;
 
-public class PlayerListener {
+import org.bukkit.event.Listener;
+
+public class PlayerListener implements Listener {
 
 }

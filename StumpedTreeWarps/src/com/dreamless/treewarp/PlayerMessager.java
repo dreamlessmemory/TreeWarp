@@ -1,0 +1,38 @@
+package com.dreamless.treewarp;
+
+import java.util.ArrayList;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+
+public class PlayerMessager {
+	public static void msg(CommandSender sender, String msg) {
+		sender.sendMessage(color("&2[Brewery] &f" + msg));
+	}
+
+	public static void msg(CommandSender sender, ArrayList<String> msg) {
+		sender.sendMessage(msg.toArray(new String[msg.size()]));
+	}
+
+	public static void msgMult(CommandSender sender, String msg) {
+		sender.sendMessage(msg.split("\n"));
+	}
+
+	public static void log(String msg) {
+		msg(Bukkit.getConsoleSender(), msg);
+	}
+
+	public void debugLog(String msg) {
+		if (TreeWarp.debug) {
+			msg(Bukkit.getConsoleSender(), "&2[Debug] &f" + msg);
+		}
+	}
+
+	public static String color(String msg) {
+		if (msg != null) {
+			msg = ChatColor.translateAlternateColorCodes('&', msg);
+		}
+		return msg;
+	}
+}
