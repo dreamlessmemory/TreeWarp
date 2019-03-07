@@ -23,7 +23,7 @@ public class PlayerMessager {
 		msg(Bukkit.getConsoleSender(), msg);
 	}
 
-	public void debugLog(String msg) {
+	public static void debugLog(String msg) {
 		if (TreeWarp.debug) {
 			msg(Bukkit.getConsoleSender(), "&2[Debug] &f" + msg);
 		}
