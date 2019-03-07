@@ -5,9 +5,14 @@ main: com.dreamless.treewarp.TreeWarp
 api-version: 1.13
 authors: [DreamlessMemory/MemoryReborn]
 prefix: TreeWarp
-depend: Item-NBT-API
+depend: [ItemNBTAPI]
 commands:
-  brewery:
+  TreeWarp:
     description: Command for Administration
-    aliases: [tree, treewarps]
+    aliases: [tree, tw]
 permissions:
+# -- Commands --
+  brewery.cmd.bonemeal:
+    description: Give special bonemeal
+  brewery.cmd.reload:
+    description: Reload config

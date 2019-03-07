@@ -35,19 +35,14 @@ public class TreeWarp extends JavaPlugin {
 	// debug
 	public static boolean debug;
 	public static boolean development;
+	
+	//Language
+	public LanguageReader languageReader;
 
 	@Override
 	public void onEnable() {
 
 		treeWarp = this;
-
-		// Check dependency
-		if (!Bukkit.getPluginManager().isPluginEnabled("Item-NBT-API")) {
-			getLogger().severe("*** NBT API is not installed or not enabled. ***");
-			getLogger().severe("*** This plugin will be disabled. ***");
-			this.setEnabled(false);
-			return;
-		}
 
 		// Load Config
 		try {
@@ -76,14 +71,14 @@ public class TreeWarp extends JavaPlugin {
 		}
 
 		// Listeners
-
-		// Listeners
 		blockListener = new BlockListener();
 		playerListener = new PlayerListener();
 		getCommand("TreeWarp").setExecutor(new CommandListener());
 
 		treeWarp.getServer().getPluginManager().registerEvents(blockListener, treeWarp);
 		treeWarp.getServer().getPluginManager().registerEvents(playerListener, treeWarp);
+
+		PlayerMessager.log(this.getDescription().getName() + " enabled!");
 	}
 
 	@Override
@@ -114,6 +109,7 @@ public class TreeWarp extends JavaPlugin {
 	}
 
 	private boolean readConfig() {
+		
 		/*** config.yml ***/
 		File currentFile = new File(treeWarp.getDataFolder(), "config.yml");
 		if (!currentFile.exists()) {
@@ -131,8 +127,31 @@ public class TreeWarp extends JavaPlugin {
 		// Dev/Debug control
 		debug = currentConfig.getBoolean("debug", false);
 		development = currentConfig.getBoolean("development", false);
+		
+		/*** text.yml ***/
+		currentFile = new File(treeWarp.getDataFolder(), "text.yml");
+		if (!currentFile.exists()) {
+			return false;
+		}
+		
+		LanguageReader.loadEntries(currentFile);
 
 		return true;
+	}
+	
+	public  void reload() {	
+		try {
+			if (!treeWarp.readConfig()) {
+				treeWarp = null;
+				getServer().getPluginManager().disablePlugin(this);
+				return;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			treeWarp = null;
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
 	}
 
 	public static String getDatabase(String type) {
@@ -147,6 +166,10 @@ public class TreeWarp extends JavaPlugin {
 		default:
 			return database;
 		}
+	}
+	
+	public static String getText(String text) {
+		return treeWarp.languageReader.getText(text);
 	}
 
 }
