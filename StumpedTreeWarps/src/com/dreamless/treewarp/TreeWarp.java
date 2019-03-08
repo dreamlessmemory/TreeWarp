@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.dreamless.treewarp.listeners.BlockListener;
 import com.dreamless.treewarp.listeners.CommandListener;
 import com.dreamless.treewarp.listeners.PlayerListener;
+import com.google.gson.Gson;
 import com.mysql.jdbc.Connection;
 
 public class TreeWarp extends JavaPlugin {
@@ -154,22 +155,9 @@ public class TreeWarp extends JavaPlugin {
 		}
 	}
 
-	public static String getDatabase(String type) {
-		if (type == null) {
-			return database;
-		}
-		switch (type) {
-		case "cauldrons":
-		case "barrels":
-		case "brewtypes":
+	public static String getDatabase() {
 			return development ? testdatabase : database;
-		default:
-			return database;
-		}
-	}
-	
-	public static String getText(String text) {
-		return treeWarp.languageReader.getText(text);
+
 	}
 
 }

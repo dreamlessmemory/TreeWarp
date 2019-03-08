@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.dreamless.treewarp.DatabaseHandler;
 import com.dreamless.treewarp.PlayerMessager;
 import com.dreamless.treewarp.TreeWarpUtils;
 
@@ -39,10 +40,7 @@ public class BlockListener implements Listener {
 		NBTItem nbti = new NBTItem(inHand);
 
 		if (nbti.hasKey("TreeWarp")) {
-			//TODO: Handle the database
-			for (BlockState block : event.getBlocks()) {
-				block.setType(Material.DIAMOND_BLOCK);
-			}
+			DatabaseHandler.addTreeBlocks(event.getBlocks(), event.getLocation(), player);
 		}
 	}
 
