@@ -3,7 +3,6 @@ package com.dreamless.treewarp;
 import java.io.File;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.HandlerList;
@@ -12,7 +11,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.dreamless.treewarp.listeners.BlockListener;
 import com.dreamless.treewarp.listeners.CommandListener;
 import com.dreamless.treewarp.listeners.PlayerListener;
-import com.google.gson.Gson;
 import com.mysql.jdbc.Connection;
 
 public class TreeWarp extends JavaPlugin {
