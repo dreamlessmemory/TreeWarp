@@ -102,6 +102,7 @@ public class TreeHandler {
 		
 		NBTCompound treeWarp = nbti.addCompound("TreeWarp");
 		
+		treeWarp.setString("world", location.getWorld().toString());
 		treeWarp.setDouble("x", location.getX());
 		treeWarp.setDouble("y", location.getY());
 		treeWarp.setDouble("z", location.getZ());

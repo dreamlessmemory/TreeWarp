@@ -93,7 +93,7 @@ public class BlockListener implements Listener {
 		
 		if(harvestingLeaves) {
 			//PlayerMessager.debugLog("Drop?");
-			location.getWorld().dropItemNaturally(location, TreeHandler.getWarpLeaf(clickedBlock.getType(), player, warpLocation));
+			location.getWorld().dropItemNaturally(player.getEyeLocation(), TreeHandler.getWarpLeaf(clickedBlock.getType(), player, warpLocation));
 		} 
 	}
 
