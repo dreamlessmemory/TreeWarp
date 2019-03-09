@@ -60,7 +60,7 @@ public class BlockListener implements Listener {
 	public void onBlockBreak(BlockBreakEvent event) {
 		Block clickedBlock = event.getBlock();
 		if(!TreeHandler.isPotentialTreeBlock(clickedBlock.getType())){
-			PlayerMessager.debugLog("Not potentially a tree");
+			//PlayerMessager.debugLog("Not potentially a tree");
 			return; // Ignore if not tree
 		}
 		
@@ -74,10 +74,10 @@ public class BlockListener implements Listener {
 		if (item.getType() == Material.SHEARS) {
 			NBTItem nbti = new NBTItem(item);
 			if (nbti.hasKey("TreeWarp")) {
-				PlayerMessager.debugLog("Leaf harvesting");
+				//PlayerMessager.debugLog("Leaf harvesting");
 				harvestingLeaves = true;
-			} else PlayerMessager.debugLog("Nope?");
-		} else PlayerMessager.debugLog("YA Nope?");
+			} //else PlayerMessager.debugLog("Nope?");
+		}// else PlayerMessager.debugLog("YA Nope?");
 		
 		/*** Actual processing here ***/
 		
@@ -85,14 +85,14 @@ public class BlockListener implements Listener {
 		Location warpLocation = CacheHandler.getWarpLocation(location);
 		
 		if(warpLocation == null) {// This means this is not associated with any tree
-			PlayerMessager.debugLog("No tree here");
+			//PlayerMessager.debugLog("No tree here");
 			return; // TODO: Figure out what to do here
 		}
 		
 		event.setCancelled(true);
 		
 		if(harvestingLeaves) {
-			PlayerMessager.debugLog("Drop?");
+			//PlayerMessager.debugLog("Drop?");
 			location.getWorld().dropItemNaturally(location, TreeHandler.getWarpLeaf(clickedBlock.getType(), player, warpLocation));
 		} 
 	}

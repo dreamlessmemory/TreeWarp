@@ -13,48 +13,50 @@ import org.bukkit.entity.Player;
 import com.google.gson.reflect.TypeToken;
 
 public class DatabaseHandler {
-	
+
 	public static HashMap<Location, Location> getLeafToRootCache() {
 		HashMap<Location, Location> leafToRoot = new HashMap<Location, Location>();
-		
+
 		String query = "SELECT * FROM " + TreeWarp.getDatabase() + "trees";
-		
-		try (PreparedStatement stmt = TreeWarp.connection.prepareStatement(query)){					
+
+		try (PreparedStatement stmt = TreeWarp.connection.prepareStatement(query)) {
 			ResultSet result = stmt.executeQuery();
-			while(result.next()) {
-				leafToRoot.put(TreeWarpUtils.deserializeLocation(result.getString("location")), TreeWarpUtils.deserializeLocation(result.getString("center")));
+			while (result.next()) {
+				leafToRoot.put(TreeWarpUtils.deserializeLocation(result.getString("location")),
+						TreeWarpUtils.deserializeLocation(result.getString("center")));
 			}
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
-		
+		}
+
 		return leafToRoot;
 	}
 
 	public static HashMap<String, Location> getPlayerToRootCache() {
 		HashMap<String, Location> playerToRoot = new HashMap<String, Location>();
-		
+
 		String query = "SELECT * FROM " + TreeWarp.getDatabase() + "players";
-		
-		try (PreparedStatement stmt = TreeWarp.connection.prepareStatement(query)){					
+
+		try (PreparedStatement stmt = TreeWarp.connection.prepareStatement(query)) {
 			ResultSet result = stmt.executeQuery();
-			while(result.next()) {
-				playerToRoot.put(result.getString("player"), TreeWarpUtils.deserializeLocation(result.getString("center")));
+			while (result.next()) {
+				playerToRoot.put(result.getString("player"),
+						TreeWarpUtils.deserializeLocation(result.getString("center")));
 			}
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
-		
+		}
+
 		return playerToRoot;
 	}
-	
+
 	public static void addTreeBlocks(List<BlockState> list, Location location, Player player) {
+		removeOldTree(player);
 		updatePlayer(player, location);
-		//TODO: remove old tree
 		updateTrees(list, location);
 	}
 
@@ -70,7 +72,7 @@ public class DatabaseHandler {
 			preparedStatement.executeUpdate();
 
 			PlayerMessager.debugLog(preparedStatement.toString());
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -78,7 +80,8 @@ public class DatabaseHandler {
 	}
 
 	private static void updateTrees(List<BlockState> list, Location location) {
-		String insert = "INSERT INTO " + TreeWarp.getDatabase() + "trees (location, center) VALUES (?, ?) ON DUPLICATE KEY UPDATE center=?";
+		String insert = "INSERT INTO " + TreeWarp.getDatabase()
+				+ "trees (location, center) VALUES (?, ?) ON DUPLICATE KEY UPDATE center=?";
 
 		try (PreparedStatement preparedStatement = TreeWarp.connection.prepareStatement(insert)) {
 
@@ -100,5 +103,44 @@ public class DatabaseHandler {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	private static String getLocation(Player player) {
+		String query = "SELECT center FROM  " + TreeWarp.getDatabase() + "players";
+
+		String center = null;
+
+		try (PreparedStatement preparedStatement = TreeWarp.connection.prepareStatement(query)) {
+
+			ResultSet result = preparedStatement.executeQuery();
+			if (result.next()) {
+				center = result.getString("center");
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return center;
+	}
+
+	private static void removeOldTree(Player player) {
+		String center = getLocation(player);
+
+		if (center != null) {
+			String query = "DELETE FROM " + TreeWarp.getDatabase() + "trees WHERE center=?";
+
+			try (PreparedStatement preparedStatement = TreeWarp.connection.prepareStatement(query)) {
+
+				preparedStatement.setString(1, center);
+				preparedStatement.executeUpdate();
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 	}
 }

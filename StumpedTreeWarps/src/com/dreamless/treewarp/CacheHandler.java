@@ -15,27 +15,29 @@ public class CacheHandler {
 	/*** Updating ***/
 
 	// Both Caches
-	
+
 	public static void loadCaches() {
 		leafToRoot = DatabaseHandler.getLeafToRootCache();
 		playerToRoot = DatabaseHandler.getPlayerToRootCache();
 	}
-	
+
 	public static void updateCaches(List<BlockState> list, Location location, Player player) {
-		// Update player-root cache
-		playerToRoot.put(player.getUniqueId().toString(), location);
-		
+
 		// Update tree-root cache
 		removeUserTree(player);
 		addToTreeCache(list, location);
+
+		// Update player-root cache
+		playerToRoot.put(player.getUniqueId().toString(), location);
+
 	}
 
 	// LeafToRoot
 	public static void removeUserTree(Player player) {
 		Location location = playerToRoot.get(player.getUniqueId().toString());
-		if (location != null)
-			if(leafToRoot.values().remove(location))
-				PlayerMessager.debugLog("Removed old tree");
+		if (location != null) {
+			while(leafToRoot.values().remove(location)) PlayerMessager.debugLog("Removed old tree");
+		}
 	}
 
 	public static void addToTreeCache(List<BlockState> list, Location location) {
@@ -47,7 +49,7 @@ public class CacheHandler {
 	/*** Lookup ***/
 
 	public static Location getWarpLocation(Location location) {
-		PlayerMessager.debugLog("Lookup: " +location.toString());
+		PlayerMessager.debugLog("Lookup: " + location.toString());
 		return leafToRoot.get(location);
 	}
 
