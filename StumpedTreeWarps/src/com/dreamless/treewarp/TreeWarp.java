@@ -68,6 +68,9 @@ public class TreeWarp extends JavaPlugin {
 		} catch (SQLException e) { // catching errors)
 			e.printStackTrace(); // prints out SQLException errors to the console (if any)
 		}
+		
+		// Load Cache
+		CacheHandler.loadCaches();
 
 		// Listeners
 		blockListener = new BlockListener();

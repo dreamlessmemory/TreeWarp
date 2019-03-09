@@ -20,10 +20,18 @@ public class LanguageReader {
 		}
 	}
 
-	public static String getText(String key) {
+	public static String getText(String key, String... args) {
 		String entry = entries.get(key);
 
-		if (entry == null) {
+		if (entry != null) {
+			int i = 0;
+			for (String arg : args) {
+				if (arg != null) {
+					i++;
+					entry = entry.replace("&v" + i, arg);
+				}
+			}
+		} else {
 			entry = "%No text for: '" + key + "'%";
 		}
 

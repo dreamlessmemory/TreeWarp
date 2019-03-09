@@ -1,5 +1,6 @@
 package com.dreamless.treewarp.listeners;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -7,19 +8,21 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.dreamless.treewarp.CacheHandler;
 import com.dreamless.treewarp.DatabaseHandler;
+import com.dreamless.treewarp.PlayerMessager;
 import com.dreamless.treewarp.TreeHandler;
 
 import de.tr7zw.itemnbtapi.NBTItem;
 
 public class BlockListener implements Listener {
 
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onTreeGrowth(StructureGrowEvent event) {
 
 		if (!event.isFromBonemeal())
@@ -43,7 +46,9 @@ public class BlockListener implements Listener {
 		if (nbti.hasKey("TreeWarp")) {
 			
 			/*** Actual processing here ***/
-
+			
+			PlayerMessager.debugLog("Processing Tree");
+			
 			// Cache
 			CacheHandler.updateCaches(event.getBlocks(), event.getLocation(), player);
 
@@ -51,28 +56,45 @@ public class BlockListener implements Listener {
 			DatabaseHandler.addTreeBlocks(event.getBlocks(), event.getLocation(), player);
 		}
 	}
-
-	public void onShearsUse(PlayerInteractEvent event) {
-		// Check if right click
-		if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
-			return; // Ignore if not right click
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void onBlockBreak(BlockBreakEvent event) {
+		Block clickedBlock = event.getBlock();
+		if(!TreeHandler.isPotentialTreeBlock(clickedBlock.getType())){
+			PlayerMessager.debugLog("Not potentially a tree");
+			return; // Ignore if not tree
+		}
+		
+		Player player = event.getPlayer();
 
 		// Check if using shears
-		ItemStack item = event.getItem();
-		if (item.getType() != Material.SHEARS)
-			return; // Ignore if not shears
 		
-		Block clickedBlock = event.getClickedBlock();
-		if(!TreeHandler.isPotentialTreeBlock(clickedBlock.getType()))
-			return; // Ignore if not tree
+		boolean harvestingLeaves = false;
 		
-		NBTItem nbti = new NBTItem(item);
-		if (!nbti.hasKey("TreeWarp"))
-			return; // Ignore if not magic shears
+		ItemStack item = player.getInventory().getItemInMainHand();
+		if (item.getType() == Material.SHEARS) {
+			NBTItem nbti = new NBTItem(item);
+			if (nbti.hasKey("TreeWarp")) {
+				PlayerMessager.debugLog("Leaf harvesting");
+				harvestingLeaves = true;
+			} else PlayerMessager.debugLog("Nope?");
+		} else PlayerMessager.debugLog("YA Nope?");
 		
 		/*** Actual processing here ***/
 		
+		Location location = clickedBlock.getLocation();
+		Location warpLocation = CacheHandler.getWarpLocation(location);
 		
+		if(warpLocation == null) {// This means this is not associated with any tree
+			PlayerMessager.debugLog("No tree here");
+			return; // TODO: Figure out what to do here
+		}
+		
+		event.setCancelled(true);
+		
+		if(harvestingLeaves) {
+			PlayerMessager.debugLog("Drop?");
+			location.getWorld().dropItemNaturally(location, TreeHandler.getWarpLeaf(clickedBlock.getType(), player, warpLocation));
+		} 
 	}
 
 }

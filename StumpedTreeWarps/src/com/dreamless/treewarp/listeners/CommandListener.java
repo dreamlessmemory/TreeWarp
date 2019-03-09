@@ -42,6 +42,15 @@ public class CommandListener implements CommandExecutor{
 				PlayerMessager.msg(sender, LanguageReader.getText("Error_NoPermissions"));
 			}
 
+		} else if (cmd.equalsIgnoreCase("shears")) {
+
+			//if (sender.hasPermission("treewarp.cmd.bonemeal")) {
+			if (true) {
+				cmdShears(sender);
+			} else {
+				PlayerMessager.msg(sender, LanguageReader.getText("Error_NoPermissions"));
+			}
+
 		}
 		return true;
 	}
@@ -49,6 +58,12 @@ public class CommandListener implements CommandExecutor{
 	private void cmdBonemeal(CommandSender sender) {
 		if(sender instanceof Player) {
 			((Player)sender).getInventory().addItem(CustomRecipes.bonemealItem());
+		}
+	}
+	
+	private void cmdShears(CommandSender sender) {
+		if(sender instanceof Player) {
+			((Player)sender).getInventory().addItem(CustomRecipes.shearsItem());
 		}
 	}
 }

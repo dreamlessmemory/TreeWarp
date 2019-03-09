@@ -52,5 +52,32 @@ public class CustomRecipes {
 		
 		return item;
 	}
-	
+
+	public static ItemStack shearsItem() {
+		ItemStack item = new ItemStack(Material.SHEARS);
+		
+		/*** Item Meta ***/
+		ItemMeta itemMeta = item.getItemMeta();
+		
+		// Set Name
+		itemMeta.setDisplayName(LanguageReader.getText("Shears_Item_Name"));
+		
+		// Set flavor text
+		itemMeta.setLore(TreeWarpUtils.wrapText(LanguageReader.getText("Shears_Item_Text")));
+		
+		// Set cosmetic enchantment
+		itemMeta.addEnchant(Enchantment.DURABILITY, 1, true);
+		
+		// Apply meta
+		item.setItemMeta(itemMeta);
+		
+		/*** NBT ***/
+		NBTItem nbti = new NBTItem(item);
+		
+		nbti.addCompound("TreeWarp");
+		
+		item = nbti.getItem();
+		
+		return item;
+	}
 }
