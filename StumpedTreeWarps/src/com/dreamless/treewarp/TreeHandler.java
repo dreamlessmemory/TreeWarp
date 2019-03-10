@@ -54,6 +54,20 @@ public class TreeHandler {
 		}
 	}
 	
+	public static boolean isPotentialLeaf(Material material) {
+		switch (material) {
+		case BIRCH_LEAVES:
+		case OAK_LEAVES:
+		case JUNGLE_LEAVES:
+		case DARK_OAK_LEAVES:
+		case ACACIA_LEAVES:
+		case SPRUCE_LEAVES:
+			return true;
+		default:
+			return false;
+		}
+	}
+	
 	public static Material getRelatedLeaf(Material material) {
 		switch (material) {
 		case BIRCH_LEAVES:
@@ -102,7 +116,7 @@ public class TreeHandler {
 		
 		NBTCompound treeWarp = nbti.addCompound("TreeWarp");
 		
-		treeWarp.setString("world", location.getWorld().toString());
+		treeWarp.setString("world", location.getWorld().getName());
 		treeWarp.setDouble("x", location.getX());
 		treeWarp.setDouble("y", location.getY());
 		treeWarp.setDouble("z", location.getZ());
