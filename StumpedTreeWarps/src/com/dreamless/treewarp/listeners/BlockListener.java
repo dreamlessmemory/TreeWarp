@@ -105,7 +105,7 @@ public class BlockListener implements Listener {
 
 		if (harvestingLeaves) {
 			// PlayerMessager.debugLog("Drop?");
-			location.getWorld().dropItem(player.getEyeLocation(),
+			location.getWorld().dropItem(player.getEyeLocation().subtract(0,1,0),
 					TreeHandler.getWarpLeaf(clickedBlock.getType(), player, warpLocation));
 		}
 	}
@@ -116,13 +116,13 @@ public class BlockListener implements Listener {
 		ItemStack itemStack = event.getItemDrop().getItemStack();
 
 		if (!TreeHandler.isPotentialLeaf(itemStack.getType())) {
-			PlayerMessager.debugLog("Not leaf");
+			//PlayerMessager.debugLog("Not leaf");
 			return;
 		}
 		
 		NBTItem nbti = new NBTItem(itemStack);
 		if (!nbti.hasKey("TreeWarp")) {
-			PlayerMessager.debugLog("Not warp leaf");
+			//PlayerMessager.debugLog("Not warp leaf");
 			return;
 		} // else PlayerMessager.debugLog("Nope?");
 
@@ -148,7 +148,7 @@ public class BlockListener implements Listener {
 		
 		// Inform player
 		PlayerMessager.msg(player, LanguageReader.getText("Teleport_Prepare"));
-		new EffectHandler.EffectRunnable(player.getLocation(), 60, 3, "ready", itemStack.getType().createBlockData()).runTaskTimer(TreeWarp.treeWarp, 0, 3);
+		new EffectHandler.EffectRunnable(player.getLocation(), 60, 1, "ready", itemStack.getType().createBlockData()).runTaskTimer(TreeWarp.treeWarp, 0, 1);
 		new TeleportHandler(event.getPlayer(), destination, player.getLocation(), itemStack.getType()).runTaskLater(TreeWarp.treeWarp, 60);
 	}
 }

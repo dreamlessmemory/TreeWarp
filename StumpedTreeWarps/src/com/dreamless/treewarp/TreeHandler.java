@@ -123,7 +123,7 @@ public class TreeHandler {
 		
 		leaf = nbti.getItem();
 		
-		PlayerMessager.debugLog("Leaf: " + leaf.toString());
+		//PlayerMessager.debugLog("Leaf: " + leaf.toString());
 		
 		return leaf;
 	}

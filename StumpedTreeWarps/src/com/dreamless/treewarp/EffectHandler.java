@@ -16,19 +16,17 @@ public class EffectHandler {
 	public static double RADIUS = 1;
 	public static int ANGLE = 25;
 
-	public static void teleportActivateEffect(Location location, BlockData blockData) {
+	public static Vector teleportActivateEffect(Location location, BlockData blockData, Vector vec) {
 		World world = location.getWorld();
-		location.add(new Vector(0, 0.25, 0));
+		location.add(new Vector(0, 0.05, 0));
 	
 		Location tempLocation = location.clone();
 
-		double yangle = Math.toRadians(ANGLE); // note that here we do have to convert to radians.
-		double yAxisCos = Math.cos(-yangle); // getting the cos value for the yaw.
-		double yAxisSin = Math.sin(-yangle); // getting the sin value for the yaw.
+		//double yangle = Math.toRadians(ANGLE); // note that here we do have to convert to radians.
+		//double yAxisCos = Math.cos(-yangle); // getting the cos value for the yaw.
+		//double yAxisSin = Math.sin(-yangle); // getting the sin value for the yaw.
 		
-		Vector vec = new Vector(RADIUS, 0, RADIUS);
-		
-		for (double a = 0; a < Math.PI * 2; a += Math.PI / PARTICLE_COUNT) {
+		/*for (double a = 0; a < Math.PI * 2; a += Math.PI / PARTICLE_COUNT) {
 			// calculate x and z.[/SIZE]
 
 			vec = rotateAroundAxisY(vec, yAxisCos, yAxisSin);
@@ -36,32 +34,48 @@ public class EffectHandler {
 			
 			world.spawnParticle(Particle.BLOCK_CRACK, tempLocation.clone().add(vec), 1, 0, 0, 0, blockData);
 			world.spawnParticle(Particle.VILLAGER_HAPPY, tempLocation.clone().add(vec), 1, 0, 0, 0);
+		}*/
+		
+		vec = rotateAroundAxisYToo(vec, ANGLE);
+		Vector tempVector = vec.clone();
+		for(int i = 0; i < PARTICLE_COUNT; i++) {
+			tempVector = rotateAroundAxisYToo(tempVector, 360/PARTICLE_COUNT);
+			world.spawnParticle(Particle.VILLAGER_HAPPY, tempLocation.clone().add(tempVector), 1, 0, 0, 0);
 		}
+		
+		return vec;
 	}
 
-	public static void teleportReadyEffect(Location location, BlockData blockData) {
+	public static Vector teleportReadyEffect(Location location, BlockData blockData, Vector vec) {
 
 		World world = location.getWorld();
 
-		location.add(new Vector(0, 0.125, 0));
+		location.add(new Vector(0, 0.05, 0));
 		
 		Location tempLocation = location.clone();
 
-		double yangle = Math.toRadians(ANGLE); // note that here we do have to convert to radians.
-		double yAxisCos = Math.cos(-yangle); // getting the cos value for the yaw.
-		double yAxisSin = Math.sin(-yangle); // getting the sin value for the yaw.
+		//double yangle = Math.toRadians(ANGLE); // note that here we do have to convert to radians.
+		//double yAxisCos = Math.cos(-yangle); // getting the cos value for the yaw.
+		//double yAxisSin = Math.sin(-yangle); // getting the sin value for the yaw.
 		
-		Vector vec = new Vector(RADIUS, 0, RADIUS);
-		
-		for (double a = 0; a < Math.PI * 2; a += Math.PI / PARTICLE_COUNT) {
+		/*for (double a = 0; a < Math.PI * 2; a += Math.PI / PARTICLE_COUNT) {
 			// calculate x and z.[/SIZE]
 
 			vec = rotateAroundAxisY(vec, yAxisCos, yAxisSin);
 			// add vec to center, display particle and subtract vec from center.
 			
 			world.spawnParticle(Particle.BLOCK_CRACK, tempLocation.clone().add(vec), 1, 0, 0, 0, blockData);
+		}*/
+		
+		vec = rotateAroundAxisYToo(vec, ANGLE);
+		Vector tempVector = vec.clone();
+		for(int i = 0; i < PARTICLE_COUNT; i++) {
+			tempVector = rotateAroundAxisYToo(tempVector, 360/PARTICLE_COUNT);
+			world.spawnParticle(Particle.VILLAGER_HAPPY, tempLocation.clone().add(tempVector), 1, 0, 0, 0);
 		}
+		
 
+		return vec;
 	}
 
 	public static void teleportAreaEffects(Location location) {
@@ -75,6 +89,15 @@ public class EffectHandler {
 		double z = v.getX() * -sin + v.getZ() * cos;
 		return v.setX(x).setZ(z);
 	}
+	
+	private static Vector rotateAroundAxisYToo(Vector v, int angle) {
+		double yangle = Math.toRadians(angle); // note that here we do have to convert to radians.
+		double yAxisCos = Math.cos(-yangle); // getting the cos value for the yaw.
+		double yAxisSin = Math.sin(-yangle);
+		double x = v.getX() * yAxisCos + v.getZ() * yAxisSin;
+		double z = v.getX() * -yAxisSin + v.getZ() * yAxisCos;
+		return v.setX(x).setZ(z);
+	}
 
 	public static class EffectRunnable extends BukkitRunnable {
 
@@ -84,6 +107,7 @@ public class EffectHandler {
 		private int time = 0;
 		String type;
 		private BlockData blockData;
+		Vector vec = new Vector(RADIUS, 0, RADIUS);
 
 		public EffectRunnable(Location loc, int dur, int interv, String type, BlockData blockData) {
 			location = loc;
@@ -105,10 +129,10 @@ public class EffectHandler {
 
 			switch (type) {
 			case "ready":
-				teleportReadyEffect(location, blockData);
+				vec = teleportReadyEffect(location, blockData, vec);
 				break;
 			case "activate":
-				teleportActivateEffect(location, blockData);
+				vec = teleportActivateEffect(location, blockData, vec);
 				break;
 			default: // Do nothing?
 				break;
