@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 
 public class PlayerMessager {
 	public static void msg(CommandSender sender, String msg) {
-		sender.sendMessage(color("&2[Brewery] &f" + msg));
+		sender.sendMessage(color("&2[TreeWarp] &f" + msg));
 	}
 
 	public static void msg(CommandSender sender, ArrayList<String> msg) {

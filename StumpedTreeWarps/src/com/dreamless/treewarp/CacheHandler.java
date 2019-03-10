@@ -1,5 +1,6 @@
 package com.dreamless.treewarp;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -55,5 +56,9 @@ public class CacheHandler {
 
 	public static boolean containsTree(Location location) {
 		return leafToRoot.containsKey(location);
+	}
+	
+	public static Collection<Location> getWarpLocations(){
+		return playerToRoot.values();
 	}
 }

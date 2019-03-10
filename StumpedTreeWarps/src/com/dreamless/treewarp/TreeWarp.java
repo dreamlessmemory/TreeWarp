@@ -130,6 +130,10 @@ public class TreeWarp extends JavaPlugin {
 		debug = currentConfig.getBoolean("debug", false);
 		development = currentConfig.getBoolean("development", false);
 		
+		// Effects
+		EffectHandler.ANGLE = currentConfig.getInt("angle", 25);
+		EffectHandler.PARTICLE_COUNT = currentConfig.getInt("particles", 7);
+		EffectHandler.RADIUS = currentConfig.getDouble("radius", 1);
 		/*** text.yml ***/
 		currentFile = new File(treeWarp.getDataFolder(), "text.yml");
 		if (!currentFile.exists()) {

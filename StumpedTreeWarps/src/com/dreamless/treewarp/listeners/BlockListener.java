@@ -21,6 +21,7 @@ import org.checkerframework.checker.units.qual.s;
 
 import com.dreamless.treewarp.CacheHandler;
 import com.dreamless.treewarp.DatabaseHandler;
+import com.dreamless.treewarp.EffectHandler;
 import com.dreamless.treewarp.LanguageReader;
 import com.dreamless.treewarp.PlayerMessager;
 import com.dreamless.treewarp.TeleportHandler;
@@ -135,10 +136,19 @@ public class BlockListener implements Listener {
 		Location destination = new Location(Bukkit.getWorld(treeWarp.getString("world")), treeWarp.getDouble("x"), treeWarp.getDouble("y"), treeWarp.getDouble("z"));
 		
 		// Remove leaf item
-		item.remove();
+		item.setPickupDelay(1000);
+		new BukkitRunnable() {
+			
+			@Override
+			public void run() {
+				item.remove();
+			}
+		}.runTaskLater(TreeWarp.treeWarp, 20);
+		
 		
 		// Inform player
 		PlayerMessager.msg(player, LanguageReader.getText("Teleport_Prepare"));
-		new TeleportHandler(event.getPlayer(), destination, player.getLocation()).runTaskLater(TreeWarp.treeWarp, 60);
+		new EffectHandler.EffectRunnable(player.getLocation(), 60, 3, "ready", itemStack.getType().createBlockData()).runTaskTimer(TreeWarp.treeWarp, 0, 3);
+		new TeleportHandler(event.getPlayer(), destination, player.getLocation(), itemStack.getType()).runTaskLater(TreeWarp.treeWarp, 60);
 	}
 }
