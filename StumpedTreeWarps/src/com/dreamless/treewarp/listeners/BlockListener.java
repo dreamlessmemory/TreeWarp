@@ -1,9 +1,5 @@
 package com.dreamless.treewarp.listeners;
 
-import java.text.ParseException;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -142,7 +138,7 @@ public class BlockListener implements Listener {
 				DatabaseHandler.removeLeafBlock(location);
 				PlayerMessager.msg(player, LanguageReader.getText("Tree_Lost_Leaf"));
 			} else {
-				CacheHandler.removeTreeFromCache(location);
+				CacheHandler.removeTreeFromCache(warpLocation);
 				DatabaseHandler.removeTree(TreeWarpUtils.serializeLocation(warpLocation));
 				PlayerMessager.msg(player, LanguageReader.getText("Tree_Lost_Tree"));
 			}
