@@ -1,5 +1,8 @@
 package com.dreamless.treewarp.listeners;
 
+import java.text.ParseException;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -184,8 +187,15 @@ public class BlockListener implements Listener {
 				return;
 			}
 		} else {
-			destination = new Location(Bukkit.getWorld(treeWarp.getString("world")), treeWarp.getDouble("x"),
-					treeWarp.getDouble("y"), treeWarp.getDouble("z"));
+			destination = CacheHandler.getWarpLocation(treeWarp.getString("playerUUID"));
+			
+			if(destination == null) {
+				PlayerMessager.msg(player, LanguageReader.getText("Teleport_No_Tree"));
+				return;
+			}
+			
+			//= new Location(Bukkit.getWorld(treeWarp.getString("world")), treeWarp.getDouble("x"),
+			//		treeWarp.getDouble("y"), treeWarp.getDouble("z"));
 		}
 		// Remove leaf item
 		item.setPickupDelay(1000);

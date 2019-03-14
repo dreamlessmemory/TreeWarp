@@ -1,19 +1,13 @@
 package com.dreamless.treewarp.listeners;
 
-import java.io.IOException;
-import java.net.URL;
 import java.text.ParseException;
-import java.util.UUID;
 
-import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 
 import com.dreamless.treewarp.CacheHandler;
 import com.dreamless.treewarp.CustomRecipes;
@@ -71,7 +65,7 @@ public class CommandListener implements CommandExecutor {
 
 	private void cmdClearPlayer(CommandSender sender, String[] args) {
 		try {
-			Player player = Bukkit.getPlayer(getUUID(args[1]));
+			Player player = Bukkit.getPlayer(TreeWarpUtils.getUUID(args[1]));
 			
 			if(player != null) {
 			
@@ -111,21 +105,4 @@ public class CommandListener implements CommandExecutor {
 			player.getInventory().addItem(CustomRecipes.spawnLeafItem());
 		}
 	}
-	
-	private UUID getUUID(String name) throws ParseException, org.json.simple.parser.ParseException {
-        String url = "https://api.mojang.com/users/profiles/minecraft/"+name;
-        try {
-            String UUIDJson = IOUtils.toString(new URL(url), "US-ASCII");
-            if(UUIDJson.isEmpty()) {
-            	return null;
-            }
-            JSONObject UUIDObject = (JSONObject) JSONValue.parseWithException(UUIDJson);       
-            String tempID = UUIDObject.get("id").toString();
-            tempID = tempID.substring(0,  8) + "-" + tempID.substring(8,  12) + "-" + tempID.substring(12,  16) + "-" + tempID.substring(16,  20) + "-" + tempID.substring(20);
-            return UUID.fromString(tempID);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }       
-        return null;
-    }
 }

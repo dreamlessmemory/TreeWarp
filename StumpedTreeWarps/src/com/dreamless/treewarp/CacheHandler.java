@@ -72,6 +72,13 @@ public class CacheHandler {
 		//PlayerMessager.debugLog("Lookup: " + location.toString());
 		return leafToRoot.get(location);
 	}
+	
+	public static Location getWarpLocation(String player) {
+		//PlayerMessager.debugLog("Lookup: " + location.toString());
+		return playerToRoot.get(player);
+	}
+	
+	
 
 	public static boolean containsTree(Location location) {
 		return leafToRoot.containsKey(location);

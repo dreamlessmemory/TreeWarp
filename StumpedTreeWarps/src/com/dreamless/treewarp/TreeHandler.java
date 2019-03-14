@@ -120,9 +120,7 @@ public class TreeHandler {
 		
 		treeWarp.setString("world", location.getWorld().getName());
 		treeWarp.setString("player", player.getName());
-		treeWarp.setDouble("x", location.getX());
-		treeWarp.setDouble("y", location.getY());
-		treeWarp.setDouble("z", location.getZ());
+		treeWarp.setString("playerUUID", player.getUniqueId().toString());
 		
 		leaf = nbti.getItem();
 		
