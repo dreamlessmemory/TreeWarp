@@ -2,6 +2,7 @@ package com.dreamless.treewarp;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.TreeType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -135,14 +136,13 @@ public class TreeHandler {
 		Material material;
 		
 		public LeafRegrow(Location location, Material material) {
-			// TODO Auto-generated constructor stub
 			this.location = location;
 			this.material = material;
 		}
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
+			location.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, location.clone().add(0.5, 0.5, 0.5), 8, 0.5, 0.5, 0.5);
 			location.getWorld().getBlockAt(location).setType(material);
 		}
 		

@@ -17,6 +17,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.units.qual.s;
 
@@ -34,6 +36,8 @@ import de.tr7zw.itemnbtapi.NBTCompound;
 import de.tr7zw.itemnbtapi.NBTItem;
 
 public class BlockListener implements Listener {
+	
+	public static int durabilityLoss = 0;
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onTreeGrowth(StructureGrowEvent event) {
@@ -90,6 +94,12 @@ public class BlockListener implements Listener {
 			if (nbti.hasKey("TreeWarp")) {
 				// PlayerMessager.debugLog("Leaf harvesting");
 				harvestingLeaves = true;
+				
+				//Handle degradation
+				
+				Damageable itemMeta = (Damageable)item.getItemMeta();
+				itemMeta.setDamage(itemMeta.getDamage() + durabilityLoss);
+				item.setItemMeta((ItemMeta) itemMeta);
 			} // else PlayerMessager.debugLog("Nope?");
 		} // else PlayerMessager.debugLog("YA Nope?");
 
@@ -107,10 +117,9 @@ public class BlockListener implements Listener {
 
 		if (harvestingLeaves) { // Harvest a leaf
 			// PlayerMessager.debugLog("Drop?");
-			//event.setCancelled(true);
-			location.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, location.clone().add(0.5, 0.5, 0.5), 8, 1, 1, 1);
+			event.setCancelled(true);
 			location.getWorld().dropItem(location, TreeHandler.getWarpLeaf(clickedBlock.getType(), player, warpLocation));
-			
+			location.getWorld().getBlockAt(location).setType(Material.AIR);
 			new TreeHandler.LeafRegrow(location, clickedBlock.getType()).runTaskLater(TreeWarp.treeWarp, 20);
 		} else {
 			if (TreeHandler.isPotentialLeaf(clickedBlock.getType())) {// Remove just the leaf

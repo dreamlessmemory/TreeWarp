@@ -134,6 +134,10 @@ public class TreeWarp extends JavaPlugin {
 		EffectHandler.ANGLE = currentConfig.getInt("angle", 25);
 		EffectHandler.PARTICLE_COUNT = currentConfig.getInt("particles", 7);
 		EffectHandler.RADIUS = currentConfig.getDouble("radius", 1);
+		
+		// Balancing
+		BlockListener.durabilityLoss = currentConfig.getInt("cost", 0);
+		
 		/*** text.yml ***/
 		currentFile = new File(treeWarp.getDataFolder(), "text.yml");
 		if (!currentFile.exists()) {

@@ -43,11 +43,11 @@ public class CacheHandler {
 		if (location != null) {
 			// Remove from LeafToRoot
 			while (leafToRoot.values().remove(location))
-				PlayerMessager.debugLog("Removed old tree from leaf cache");
+				//PlayerMessager.debugLog("Removed old tree from leaf cache");
 			
 			// Remove from playerToRoot
 			playerToRoot.values().remove(location);
-			PlayerMessager.debugLog("Removed old tree from player cache");
+			//PlayerMessager.debugLog("Removed old tree from player cache");
 		}
 	}
 
@@ -60,7 +60,7 @@ public class CacheHandler {
 	/*** Lookup ***/
 
 	public static Location getWarpLocation(Location location) {
-		PlayerMessager.debugLog("Lookup: " + location.toString());
+		//PlayerMessager.debugLog("Lookup: " + location.toString());
 		return leafToRoot.get(location);
 	}
 
