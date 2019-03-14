@@ -3,6 +3,7 @@ package com.dreamless.treewarp.listeners;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
@@ -27,6 +28,7 @@ import com.dreamless.treewarp.PlayerMessager;
 import com.dreamless.treewarp.TeleportHandler;
 import com.dreamless.treewarp.TreeHandler;
 import com.dreamless.treewarp.TreeWarp;
+import com.dreamless.treewarp.TreeWarpUtils;
 
 import de.tr7zw.itemnbtapi.NBTCompound;
 import de.tr7zw.itemnbtapi.NBTItem;
@@ -101,12 +103,24 @@ public class BlockListener implements Listener {
 			return; // TODO: Figure out what to do here
 		}
 
-		event.setCancelled(true);
+		//event.setCancelled(true);
 
-		if (harvestingLeaves) {
+		if (harvestingLeaves) { //Harvest a leaf
 			// PlayerMessager.debugLog("Drop?");
+			event.setCancelled(true);
+			location.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, location, 5, 0, 0, 0);
 			location.getWorld().dropItem(player.getEyeLocation().subtract(0,1,0),
 					TreeHandler.getWarpLeaf(clickedBlock.getType(), player, warpLocation));
+		} else {
+			if(TreeHandler.isPotentialLeaf(clickedBlock.getType())) {//Remove just the leaf
+				CacheHandler.removeLeafFromCache(location);
+				DatabaseHandler.removeLeafBlock(location);
+				PlayerMessager.msg(player, LanguageReader.getText("Tree_Lost_Leaf"));
+			} else {
+				CacheHandler.removeTreeFromCache(location);
+				DatabaseHandler.removeTree(TreeWarpUtils.serializeLocation(warpLocation));
+				PlayerMessager.msg(player, LanguageReader.getText("Tree_Lost_Tree"));
+			}
 		}
 	}
 

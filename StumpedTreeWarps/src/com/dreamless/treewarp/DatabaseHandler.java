@@ -55,11 +55,51 @@ public class DatabaseHandler {
 	}
 
 	public static void addTreeBlocks(List<BlockState> list, Location location, Player player) {
-		removeOldTree(player);
+		removeOldTreeByPlayer(player);
 		updatePlayer(player, location);
 		updateTrees(list, location);
 	}
+	
+	public static void removeLeafBlock(Location location) {
+		String query = "DELETE FROM " + TreeWarp.getDatabase() + "trees WHERE location=?";
+		try (PreparedStatement stmt = TreeWarp.connection.prepareStatement(query)) {
+			stmt.setString(1, TreeWarpUtils.serializeLocation(location));
+			stmt.executeUpdate();
 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
+
+	public static void removeTree(String center) {
+		if (center != null) {
+			String query = "DELETE FROM " + TreeWarp.getDatabase() + "trees WHERE center=?";
+
+			try (PreparedStatement preparedStatement = TreeWarp.connection.prepareStatement(query)) {
+
+				preparedStatement.setString(1, center);
+				preparedStatement.executeUpdate();
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			query = "DELETE FROM " + TreeWarp.getDatabase() + "players WHERE center=?";
+			
+			try (PreparedStatement preparedStatement = TreeWarp.connection.prepareStatement(query)) {
+
+				preparedStatement.setString(1, center);
+				preparedStatement.executeUpdate();
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	private static void updatePlayer(Player player, Location location) {
 		String query = "INSERT INTO " + TreeWarp.getDatabase()
 				+ "players (player, center) VALUES (?, ?) ON DUPLICATE KEY UPDATE center=?";
@@ -105,7 +145,7 @@ public class DatabaseHandler {
 		}
 	}
 
-	private static String getLocation(Player player) {
+	private static void removeOldTreeByPlayer(Player player) {
 		String query = "SELECT center FROM  " + TreeWarp.getDatabase() + "players";
 
 		String center = null;
@@ -121,26 +161,7 @@ public class DatabaseHandler {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		return center;
-	}
-
-	private static void removeOldTree(Player player) {
-		String center = getLocation(player);
-
-		if (center != null) {
-			String query = "DELETE FROM " + TreeWarp.getDatabase() + "trees WHERE center=?";
-
-			try (PreparedStatement preparedStatement = TreeWarp.connection.prepareStatement(query)) {
-
-				preparedStatement.setString(1, center);
-				preparedStatement.executeUpdate();
-
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
+		
+		removeTree(center);
 	}
 }

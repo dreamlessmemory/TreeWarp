@@ -25,7 +25,7 @@ public class CacheHandler {
 	public static void updateCaches(List<BlockState> list, Location location, Player player) {
 
 		// Update tree-root cache
-		removeUserTree(player);
+		removeTreeFromCache(playerToRoot.get(player.getUniqueId().toString()));
 		addToTreeCache(list, location);
 
 		// Update player-root cache
@@ -33,11 +33,21 @@ public class CacheHandler {
 
 	}
 
+	// Remove Leaf from leafToRootCache
+	public static void removeLeafFromCache(Location location) {
+		leafToRoot.remove(location);
+	}
+
 	// LeafToRoot
-	public static void removeUserTree(Player player) {
-		Location location = playerToRoot.get(player.getUniqueId().toString());
+	public static void removeTreeFromCache(Location location) {
 		if (location != null) {
-			while(leafToRoot.values().remove(location)) PlayerMessager.debugLog("Removed old tree");
+			// Remove from LeafToRoot
+			while (leafToRoot.values().remove(location))
+				PlayerMessager.debugLog("Removed old tree from leaf cache");
+			
+			// Remove from playerToRoot
+			playerToRoot.values().remove(location);
+			PlayerMessager.debugLog("Removed old tree from player cache");
 		}
 	}
 
@@ -57,8 +67,8 @@ public class CacheHandler {
 	public static boolean containsTree(Location location) {
 		return leafToRoot.containsKey(location);
 	}
-	
-	public static Collection<Location> getWarpLocations(){
+
+	public static Collection<Location> getWarpLocations() {
 		return playerToRoot.values();
 	}
 }
