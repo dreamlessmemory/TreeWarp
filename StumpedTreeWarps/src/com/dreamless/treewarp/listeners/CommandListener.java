@@ -1,9 +1,9 @@
 package com.dreamless.treewarp.listeners;
 
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 
 import com.dreamless.treewarp.CustomRecipes;
@@ -12,10 +12,10 @@ import com.dreamless.treewarp.PlayerMessager;
 import com.dreamless.treewarp.TeleportHandler;
 import com.dreamless.treewarp.TreeWarp;
 
-public class CommandListener implements CommandExecutor{
+public class CommandListener implements CommandExecutor {
 
 	@SuppressWarnings("unused")
-	@Override	
+	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
 		String cmd = "help";
@@ -27,7 +27,7 @@ public class CommandListener implements CommandExecutor{
 
 		} else if (cmd.equalsIgnoreCase("reload")) {
 
-			//if (sender.hasPermission("treewarp.cmd.reload")) {
+			// if (sender.hasPermission("treewarp.cmd.reload")) {
 			if (true) {
 				TreeWarp.treeWarp.reload();
 				PlayerMessager.msg(sender, LanguageReader.getText("CMD_Reload"));
@@ -37,7 +37,7 @@ public class CommandListener implements CommandExecutor{
 
 		} else if (cmd.equalsIgnoreCase("bonemeal")) {
 
-			//if (sender.hasPermission("treewarp.cmd.bonemeal")) {
+			// if (sender.hasPermission("treewarp.cmd.bonemeal")) {
 			if (true) {
 				cmdBonemeal(sender);
 			} else {
@@ -46,7 +46,7 @@ public class CommandListener implements CommandExecutor{
 
 		} else if (cmd.equalsIgnoreCase("shears")) {
 
-			//if (sender.hasPermission("treewarp.cmd.bonemeal")) {
+			// if (sender.hasPermission("treewarp.cmd.bonemeal")) {
 			if (true) {
 				cmdShears(sender);
 			} else {
@@ -55,7 +55,7 @@ public class CommandListener implements CommandExecutor{
 
 		} else if (cmd.equalsIgnoreCase("spawn")) {
 
-			//if (sender.hasPermission("treewarp.cmd.bonemeal")) {
+			// if (sender.hasPermission("treewarp.cmd.bonemeal")) {
 			if (true) {
 				cmdSpawn(sender, args);
 			} else {
@@ -64,26 +64,33 @@ public class CommandListener implements CommandExecutor{
 		}
 		return true;
 	}
-	
+
 	private void cmdBonemeal(CommandSender sender) {
-		if(sender instanceof Player) {
-			((Player)sender).getInventory().addItem(CustomRecipes.bonemealItem());
+		if (sender instanceof Player) {
+			((Player) sender).getInventory().addItem(CustomRecipes.bonemealItem());
 		}
 	}
-	
+
 	private void cmdShears(CommandSender sender) {
-		if(sender instanceof Player) {
-			((Player)sender).getInventory().addItem(CustomRecipes.shearsItem());
+		if (sender instanceof Player) {
+			((Player) sender).getInventory().addItem(CustomRecipes.shearsItem());
 		}
 	}
-	
+
 	private void cmdSpawn(CommandSender sender, String[] args) {
-		if(!(sender instanceof Player)) { //No console commands please
+		if (!(sender instanceof Player)) { // No console commands please
 			return;
 		}
-		
-		if(args[1].equalsIgnoreCase("set")){
-			if(TeleportHandler.addCorner(((Player)sender).getLocation().getBlock().getLocation())) {
+
+		Player player = (Player) sender;
+
+		if (args[1].equalsIgnoreCase("set")) {
+
+			Location currentLocation = player.getLocation();
+			Location targetLocationetLocation = new Location(currentLocation.getWorld(), currentLocation.getBlockX(),
+					currentLocation.getBlockY(), currentLocation.getBlockZ());
+
+			if (TeleportHandler.addCorner(targetLocationetLocation)) {
 				PlayerMessager.msg(sender, LanguageReader.getText("CMD_Spawn_Success"));
 			} else {
 				PlayerMessager.msg(sender, LanguageReader.getText("CMD_Spawn_Failure"));
@@ -92,7 +99,7 @@ public class CommandListener implements CommandExecutor{
 			TeleportHandler.clearSpawn();
 			PlayerMessager.msg(sender, LanguageReader.getText("CMD_Spawn_Cleared"));
 		} else if (args[1].equalsIgnoreCase("leaf")) {
-			((Player)sender).getInventory().addItem(CustomRecipes.spawnLeafItem());
+			player.getInventory().addItem(CustomRecipes.spawnLeafItem());
 		}
 	}
 }

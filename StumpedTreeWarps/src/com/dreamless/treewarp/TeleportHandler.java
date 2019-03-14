@@ -2,7 +2,6 @@ package com.dreamless.treewarp;
 
 import java.util.Random;
 
-import org.bukkit.Axis;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -10,7 +9,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.checkerframework.checker.units.qual.s;
 
 public class TeleportHandler extends BukkitRunnable {
 
@@ -25,39 +23,46 @@ public class TeleportHandler extends BukkitRunnable {
 	private Player player;
 	private Location destination;
 	private Location origin;
-	// private Material material;
+	private boolean spawn;
 
-	public TeleportHandler(Player player, Location destination, Location origin, Material material) {
+	public TeleportHandler(Player player, Location destination, Location origin, boolean spawn) {
 		this.player = player;
 		this.destination = destination;
 		this.origin = origin;
-		// this.material = material;
+		this.spawn = spawn;
 	}
 
 	public static boolean addCorner(Location location) {
-
+		boolean success = false;
+		
 		if (spawnCornerFirst == null) {
 			spawnCornerFirst = location;
-			return true;
+			success =  true;
 		} else {
-			if (location.getBlockY() == spawnCornerFirst.getBlockY()) {
+			if (location.getBlockY() == spawnCornerFirst.getBlockY() && location.getWorld() == spawnCornerFirst.getWorld()) {
 				spawnCornerSecond = spawnCornerFirst;
 				spawnCornerFirst = location;
-				return true;
-			} else {
-				//reject
-				return false;
-			}
+				success =  true;
+			} 
 		}
+		DataHandler.saveSpawnArea(spawnCornerFirst, spawnCornerSecond);
+		
+		return success;
 	}
 
 	public static void clearSpawn() {
 		spawnCornerFirst = null;
 		spawnCornerSecond = null;
+		DataHandler.saveSpawnArea(spawnCornerFirst, spawnCornerSecond);
 	}
 
-	public static void updateYML() {
-
+	
+	public static void loadFirstCorner(Location location) {
+		spawnCornerFirst = location;
+	}
+	
+	public static void loadSecondCorner(Location location) {
+		spawnCornerSecond = location;
 	}
 
 	public static Location getSpawnWarpDestination() {
@@ -65,12 +70,14 @@ public class TeleportHandler extends BukkitRunnable {
 			return null;
 		}
 
-		int xAxisRange = Math.abs(spawnCornerFirst.getBlockX() - spawnCornerSecond.getBlockX());
-		int zAxisRange = Math.abs(spawnCornerFirst.getBlockZ() - spawnCornerSecond.getBlockZ());
+		double xAxisRange = Math.abs(spawnCornerFirst.getX() - spawnCornerSecond.getX());
+		double zAxisRange = Math.abs(spawnCornerFirst.getZ() - spawnCornerSecond.getZ());
 
-		int xOffset = random.nextInt(xAxisRange + 1);
-		int zOffset = random.nextInt(zAxisRange + 1);
-
+		double xOffset = random.nextDouble() * xAxisRange;
+		double zOffset = random.nextDouble() * zAxisRange;
+		
+		//Location edgeLocation = getLeftBottomLocation();
+		
 		return getLeftBottomLocation().add(xOffset, 0, zOffset);
 	}
 
@@ -78,8 +85,8 @@ public class TeleportHandler extends BukkitRunnable {
 		if (spawnCornerSecond == null || spawnCornerFirst == null) {
 			return null;
 		}
-		int xAxis = Math.min(spawnCornerFirst.getBlockX(), spawnCornerSecond.getBlockX());
-		int zAxis = Math.min(spawnCornerFirst.getBlockZ(), spawnCornerSecond.getBlockZ());
+		double xAxis = Math.min(spawnCornerFirst.getX(), spawnCornerSecond.getX());
+		double zAxis = Math.min(spawnCornerFirst.getZ(), spawnCornerSecond.getZ());
 
 		return new Location(spawnCornerFirst.getWorld(), xAxis, spawnCornerFirst.getBlockY(), zAxis);
 	}
@@ -93,9 +100,10 @@ public class TeleportHandler extends BukkitRunnable {
 		}
 
 		PlayerMessager.msg(player, LanguageReader.getText("Teleport_Confirmed"));
-
+		
+		if(!spawn) {
 		destination = calculateWarpLocation();
-
+		}
 		prepareWarpLocation(destination);
 
 		player.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, player.getLocation(), 10, 0.5, 0.5, 0.5);
