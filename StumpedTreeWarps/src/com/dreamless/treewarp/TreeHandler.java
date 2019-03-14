@@ -102,7 +102,7 @@ public class TreeHandler {
 		ItemMeta itemMeta = leaf.getItemMeta();
 		
 		// Set Name
-		itemMeta.setDisplayName(LanguageReader.getText("Leaf_Item_Name"));
+		itemMeta.setDisplayName(LanguageReader.getText("Leaf_Item_Name", player.getName()));
 		
 		// Set flavor text
 		itemMeta.setLore(TreeWarpUtils.wrapText(LanguageReader.getText("Leaf_Item_Text", player.getName())));
@@ -119,6 +119,7 @@ public class TreeHandler {
 		NBTCompound treeWarp = nbti.addCompound("TreeWarp");
 		
 		treeWarp.setString("world", location.getWorld().getName());
+		treeWarp.setString("player", player.getName());
 		treeWarp.setDouble("x", location.getX());
 		treeWarp.setDouble("y", location.getY());
 		treeWarp.setDouble("z", location.getZ());

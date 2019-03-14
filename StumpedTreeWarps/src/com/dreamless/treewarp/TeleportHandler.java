@@ -24,29 +24,32 @@ public class TeleportHandler extends BukkitRunnable {
 	private Location destination;
 	private Location origin;
 	private boolean spawn;
+	private String name;
 
-	public TeleportHandler(Player player, Location destination, Location origin, boolean spawn) {
+	public TeleportHandler(Player player, Location destination, Location origin, boolean spawn, String name) {
 		this.player = player;
 		this.destination = destination;
 		this.origin = origin;
 		this.spawn = spawn;
+		this.name = name;
 	}
 
 	public static boolean addCorner(Location location) {
 		boolean success = false;
-		
+
 		if (spawnCornerFirst == null) {
 			spawnCornerFirst = location;
-			success =  true;
+			success = true;
 		} else {
-			if (location.getBlockY() == spawnCornerFirst.getBlockY() && location.getWorld() == spawnCornerFirst.getWorld()) {
+			if (location.getBlockY() == spawnCornerFirst.getBlockY()
+					&& location.getWorld() == spawnCornerFirst.getWorld()) {
 				spawnCornerSecond = spawnCornerFirst;
 				spawnCornerFirst = location;
-				success =  true;
-			} 
+				success = true;
+			}
 		}
 		DataHandler.saveSpawnArea(spawnCornerFirst, spawnCornerSecond);
-		
+
 		return success;
 	}
 
@@ -56,11 +59,10 @@ public class TeleportHandler extends BukkitRunnable {
 		DataHandler.saveSpawnArea(spawnCornerFirst, spawnCornerSecond);
 	}
 
-	
 	public static void loadFirstCorner(Location location) {
 		spawnCornerFirst = location;
 	}
-	
+
 	public static void loadSecondCorner(Location location) {
 		spawnCornerSecond = location;
 	}
@@ -75,9 +77,9 @@ public class TeleportHandler extends BukkitRunnable {
 
 		double xOffset = random.nextDouble() * xAxisRange;
 		double zOffset = random.nextDouble() * zAxisRange;
-		
-		//Location edgeLocation = getLeftBottomLocation();
-		
+
+		// Location edgeLocation = getLeftBottomLocation();
+
 		return getLeftBottomLocation().add(xOffset, 0, zOffset);
 	}
 
@@ -99,10 +101,10 @@ public class TeleportHandler extends BukkitRunnable {
 			return;
 		}
 
-		PlayerMessager.msg(player, LanguageReader.getText(spawn? "Teleport_Spawn" : "Teleport_Confirmed"));
-		
-		if(!spawn) {
-		destination = calculateWarpLocation();
+		PlayerMessager.msg(player, LanguageReader.getText(spawn ? "Teleport_Spawn" : "Teleport_Confirmed", name));
+
+		if (!spawn) {
+			destination = calculateWarpLocation();
 		}
 		prepareWarpLocation(destination);
 

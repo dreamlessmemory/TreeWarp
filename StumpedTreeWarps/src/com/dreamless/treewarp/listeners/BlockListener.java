@@ -176,7 +176,8 @@ public class BlockListener implements Listener {
 		NBTCompound treeWarp = nbti.getCompound("TreeWarp");
 
 		Location destination;
-		if (treeWarp.hasKey("spawn")) {
+		boolean spawn = treeWarp.hasKey("spawn");
+		if (spawn) {
 			destination = TeleportHandler.getSpawnWarpDestination();
 			if (destination == null) {
 				PlayerMessager.msg(player, LanguageReader.getText("Teleport_No_Spawn"));
@@ -197,9 +198,9 @@ public class BlockListener implements Listener {
 		}.runTaskLater(TreeWarp.treeWarp, 20);
 
 		// Inform player
-		PlayerMessager.msg(player, LanguageReader.getText("Teleport_Prepare"));
+		PlayerMessager.msg(player, LanguageReader.getText(spawn? "Teleport_Prepare_Spawn" : "Teleport_Prepare", treeWarp.getString("player")));
 		new EffectHandler.EffectRunnable(player.getLocation(), 60, 1, "ready").runTaskTimer(TreeWarp.treeWarp, 0, 1);
-		new TeleportHandler(event.getPlayer(), destination, player.getLocation(), treeWarp.hasKey("spawn"))
+		new TeleportHandler(event.getPlayer(), destination, player.getLocation(), treeWarp.hasKey("spawn"), treeWarp.getString("player"))
 				.runTaskLater(TreeWarp.treeWarp, 60);
 	}
 }
