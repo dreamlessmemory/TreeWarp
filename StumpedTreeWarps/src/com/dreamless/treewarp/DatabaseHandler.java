@@ -10,8 +10,6 @@ import org.bukkit.Location;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
-import com.google.gson.reflect.TypeToken;
-
 public class DatabaseHandler {
 
 	public static HashMap<Location, Location> getLeafToRootCache() {
@@ -27,7 +25,6 @@ public class DatabaseHandler {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -47,7 +44,6 @@ public class DatabaseHandler {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -59,7 +55,7 @@ public class DatabaseHandler {
 		updatePlayer(player, location);
 		updateTrees(list, location);
 	}
-	
+
 	public static void removeLeafBlock(Location location) {
 		String query = "DELETE FROM " + TreeWarp.getDatabase() + "trees WHERE location=?";
 		try (PreparedStatement stmt = TreeWarp.connection.prepareStatement(query)) {
@@ -67,9 +63,8 @@ public class DatabaseHandler {
 			stmt.executeUpdate();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
+		}
 	}
 
 	public static void removeTree(String center) {
@@ -82,24 +77,22 @@ public class DatabaseHandler {
 				preparedStatement.executeUpdate();
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			query = "DELETE FROM " + TreeWarp.getDatabase() + "players WHERE center=?";
-			
+
 			try (PreparedStatement preparedStatement = TreeWarp.connection.prepareStatement(query)) {
 
 				preparedStatement.setString(1, center);
 				preparedStatement.executeUpdate();
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
 	private static void updatePlayer(Player player, Location location) {
 		String query = "INSERT INTO " + TreeWarp.getDatabase()
 				+ "players (player, center) VALUES (?, ?) ON DUPLICATE KEY UPDATE center=?";
@@ -114,7 +107,6 @@ public class DatabaseHandler {
 			PlayerMessager.debugLog(preparedStatement.toString());
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -140,7 +132,6 @@ public class DatabaseHandler {
 			TreeWarp.connection.setAutoCommit(true);
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -158,10 +149,9 @@ public class DatabaseHandler {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		removeTree(center);
 	}
 }

@@ -3,7 +3,6 @@ package com.dreamless.treewarp;
 import java.util.Collection;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
@@ -21,25 +20,11 @@ public class EffectHandler {
 		location.add(new Vector(0, 0.05, 0));
 	
 		Location tempLocation = location.clone();
-
-		//double yangle = Math.toRadians(ANGLE); // note that here we do have to convert to radians.
-		//double yAxisCos = Math.cos(-yangle); // getting the cos value for the yaw.
-		//double yAxisSin = Math.sin(-yangle); // getting the sin value for the yaw.
 		
-		/*for (double a = 0; a < Math.PI * 2; a += Math.PI / PARTICLE_COUNT) {
-			// calculate x and z.[/SIZE]
-
-			vec = rotateAroundAxisY(vec, yAxisCos, yAxisSin);
-			// add vec to center, display particle and subtract vec from center.
-			
-			world.spawnParticle(Particle.BLOCK_CRACK, tempLocation.clone().add(vec), 1, 0, 0, 0, blockData);
-			world.spawnParticle(Particle.VILLAGER_HAPPY, tempLocation.clone().add(vec), 1, 0, 0, 0);
-		}*/
-		
-		vec = rotateAroundAxisYToo(vec, ANGLE);
+		vec = rotateAroundAxisY(vec, ANGLE);
 		Vector tempVector = vec.clone();
 		for(int i = 0; i < PARTICLE_COUNT; i++) {
-			tempVector = rotateAroundAxisYToo(tempVector, 360/PARTICLE_COUNT);
+			tempVector = rotateAroundAxisY(tempVector, 360/PARTICLE_COUNT);
 			world.spawnParticle(Particle.VILLAGER_HAPPY, tempLocation.clone().add(tempVector), 1, 0, 0, 0);
 		}
 		
@@ -53,24 +38,11 @@ public class EffectHandler {
 		location.add(new Vector(0, 0.05, 0));
 		
 		Location tempLocation = location.clone();
-
-		//double yangle = Math.toRadians(ANGLE); // note that here we do have to convert to radians.
-		//double yAxisCos = Math.cos(-yangle); // getting the cos value for the yaw.
-		//double yAxisSin = Math.sin(-yangle); // getting the sin value for the yaw.
 		
-		/*for (double a = 0; a < Math.PI * 2; a += Math.PI / PARTICLE_COUNT) {
-			// calculate x and z.[/SIZE]
-
-			vec = rotateAroundAxisY(vec, yAxisCos, yAxisSin);
-			// add vec to center, display particle and subtract vec from center.
-			
-			world.spawnParticle(Particle.BLOCK_CRACK, tempLocation.clone().add(vec), 1, 0, 0, 0, blockData);
-		}*/
-		
-		vec = rotateAroundAxisYToo(vec, ANGLE);
+		vec = rotateAroundAxisY(vec, ANGLE);
 		Vector tempVector = vec.clone();
 		for(int i = 0; i < PARTICLE_COUNT; i++) {
-			tempVector = rotateAroundAxisYToo(tempVector, 360/PARTICLE_COUNT);
+			tempVector = rotateAroundAxisY(tempVector, 360/PARTICLE_COUNT);
 			world.spawnParticle(Particle.VILLAGER_HAPPY, tempLocation.clone().add(tempVector), 1, 0, 0, 0);
 		}
 		
@@ -81,16 +53,11 @@ public class EffectHandler {
 	public static void teleportAreaEffects(Location location) {
 
 	}
+	
 
 	// Math methods
 
-	private static Vector rotateAroundAxisY(Vector v, double cos, double sin) {
-		double x = v.getX() * cos + v.getZ() * sin;
-		double z = v.getX() * -sin + v.getZ() * cos;
-		return v.setX(x).setZ(z);
-	}
-	
-	private static Vector rotateAroundAxisYToo(Vector v, int angle) {
+	private static Vector rotateAroundAxisY(Vector v, int angle) {
 		double yangle = Math.toRadians(angle); // note that here we do have to convert to radians.
 		double yAxisCos = Math.cos(-yangle); // getting the cos value for the yaw.
 		double yAxisSin = Math.sin(-yangle);
@@ -146,7 +113,6 @@ public class EffectHandler {
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
 			Collection<Location> warpTreesCollection = CacheHandler.getWarpLocations();
 			for (Location location : warpTreesCollection) {
 				teleportAreaEffects(location);

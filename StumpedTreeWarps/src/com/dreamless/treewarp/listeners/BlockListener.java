@@ -3,25 +3,19 @@ package com.dreamless.treewarp.listeners;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.checkerframework.checker.units.qual.s;
-
 import com.dreamless.treewarp.CacheHandler;
 import com.dreamless.treewarp.DatabaseHandler;
 import com.dreamless.treewarp.EffectHandler;
@@ -109,17 +103,15 @@ public class BlockListener implements Listener {
 		Location warpLocation = CacheHandler.getWarpLocation(location);
 
 		if (warpLocation == null) {// This means this is not associated with any tree
-			// PlayerMessager.debugLog("No tree here");
-			return; // TODO: Figure out what to do here
+			return;
 		}
 
-		// event.setCancelled(true);
-
 		if (harvestingLeaves) { // Harvest a leaf
-			// PlayerMessager.debugLog("Drop?");
 			event.setCancelled(true);
+			
 			location.getWorld().dropItem(location, TreeHandler.getWarpLeaf(clickedBlock.getType(), player, warpLocation));
 			location.getWorld().getBlockAt(location).setType(Material.AIR);
+			
 			new TreeHandler.LeafRegrow(location, clickedBlock.getType()).runTaskLater(TreeWarp.treeWarp, 20);
 		} else {
 			if (TreeHandler.isPotentialLeaf(clickedBlock.getType())) {// Remove just the leaf

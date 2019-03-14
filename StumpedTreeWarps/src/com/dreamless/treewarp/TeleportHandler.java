@@ -22,7 +22,6 @@ public class TeleportHandler extends BukkitRunnable {
 	private Material material;
 
 	public TeleportHandler(Player player, Location destination, Location origin, Material material) {
-		// TODO Auto-generated constructor stub
 		this.player = player;
 		this.destination = destination;
 		this.origin = origin;
@@ -31,11 +30,8 @@ public class TeleportHandler extends BukkitRunnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-
 		double distance = origin.distanceSquared(player.getLocation());
-		if (distance > DISTANCE) {
-			// Cancel
+		if (distance > DISTANCE) { // Cancel
 			PlayerMessager.msg(player, LanguageReader.getText("Teleport_Canceled"));
 			return;
 		}
@@ -45,11 +41,11 @@ public class TeleportHandler extends BukkitRunnable {
 		destination = calculateWarpLocation();
 		
 		prepareWarpLocation(destination);
-		
-		//new EffectHandler.EffectRunnable(player.getLocation(), 30, 1, "activate", material.createBlockData()).runTaskTimer(TreeWarp.treeWarp, 0, 1);
+
 		player.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, player.getLocation(), 10, 0.5, 0.5, 0.5);
 		player.teleport(destination);
 		player.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, player.getLocation(), 10, 0.5, 0.5, 0.5);
+		
 		new EffectHandler.EffectRunnable(destination, 30, 1, "activate", material.createBlockData()).runTaskTimer(TreeWarp.treeWarp, 0, 1);
 	}
 
