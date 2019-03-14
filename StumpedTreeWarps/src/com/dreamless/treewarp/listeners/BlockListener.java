@@ -65,6 +65,9 @@ public class BlockListener implements Listener {
 
 			// Database
 			DatabaseHandler.addTreeBlocks(event.getBlocks(), event.getLocation(), player);
+			
+			// Messaging
+			PlayerMessager.msg(player, LanguageReader.getText("Tree_Grown"));
 		}
 	}
 
