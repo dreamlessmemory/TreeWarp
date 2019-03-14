@@ -34,14 +34,15 @@ public class DataHandler {
 			e.printStackTrace();
 		}
 		
+		if(configuration.contains("spawn1")) {
 		TeleportHandler.loadFirstCorner(new Location(Bukkit.getWorld(configuration.getString("spawn1.world")),
 				configuration.getDouble("spawn1.x"), configuration.getDouble("spawn1.y"),
 				configuration.getDouble("spawn1.z")));
-		PlayerMessager.debugLog("Loaded 1");
-
+		}
+		if(configuration.contains("spawn2")) {
 		TeleportHandler.loadSecondCorner(new Location(Bukkit.getWorld(configuration.getString("spawn2.world")),
 				configuration.getDouble("spawn2.x"), configuration.getDouble("spawn2.y"),
 				configuration.getDouble("spawn2.z")));
-		PlayerMessager.debugLog("Loaded 2");
+		}
 	}
 }

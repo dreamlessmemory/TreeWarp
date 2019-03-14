@@ -127,12 +127,12 @@ public class BlockListener implements Listener {
 		if (harvestingLeaves) { // Harvest a leaf
 
 			event.setCancelled(true);
-
+			new TreeHandler.LeafRegrow(location, clickedBlock.getType()).runTaskLater(TreeWarp.treeWarp, 20);
+			
 			location.getWorld().dropItem(location,
 					TreeHandler.getWarpLeaf(clickedBlock.getType(), player, warpLocation));
 			location.getWorld().getBlockAt(location).setType(Material.AIR);
 
-			new TreeHandler.LeafRegrow(location, clickedBlock.getType()).runTaskLater(TreeWarp.treeWarp, 20);
 		} else {
 			if (TreeHandler.isPotentialLeaf(clickedBlock.getType())) {// Remove just the leaf
 				CacheHandler.removeLeafFromCache(location);
