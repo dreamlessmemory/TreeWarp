@@ -15,7 +15,7 @@ public class EffectHandler {
 	public static double RADIUS = 1;
 	public static int ANGLE = 25;
 
-	public static Vector teleportActivateEffect(Location location, BlockData blockData, Vector vec) {
+	public static Vector teleportActivateEffect(Location location, Vector vec) {
 		World world = location.getWorld();
 		location.add(new Vector(0, 0.05, 0));
 	
@@ -31,7 +31,7 @@ public class EffectHandler {
 		return vec;
 	}
 
-	public static Vector teleportReadyEffect(Location location, BlockData blockData, Vector vec) {
+	public static Vector teleportReadyEffect(Location location, Vector vec) {
 
 		World world = location.getWorld();
 
@@ -73,15 +73,13 @@ public class EffectHandler {
 		private int interval;
 		private int time = 0;
 		String type;
-		private BlockData blockData;
 		Vector vec = new Vector(RADIUS, 0, RADIUS);
 
-		public EffectRunnable(Location loc, int dur, int interv, String type, BlockData blockData) {
+		public EffectRunnable(Location loc, int dur, int interv, String type) {
 			location = loc;
 			duration = dur;
 			interval = interv;
 			this.type = type;
-			this.blockData = blockData;
 		}
 
 		@Override
@@ -96,10 +94,10 @@ public class EffectHandler {
 
 			switch (type) {
 			case "ready":
-				vec = teleportReadyEffect(location, blockData, vec);
+				vec = teleportReadyEffect(location, vec);
 				break;
 			case "activate":
-				vec = teleportActivateEffect(location, blockData, vec);
+				vec = teleportActivateEffect(location, vec);
 				break;
 			default: // Do nothing?
 				break;

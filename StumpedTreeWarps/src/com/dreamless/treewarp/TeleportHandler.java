@@ -19,13 +19,13 @@ public class TeleportHandler extends BukkitRunnable {
 	private Player player;
 	private Location destination;
 	private Location origin;
-	private Material material;
+	//private Material material;
 
 	public TeleportHandler(Player player, Location destination, Location origin, Material material) {
 		this.player = player;
 		this.destination = destination;
 		this.origin = origin;
-		this.material = material;
+		//this.material = material;
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class TeleportHandler extends BukkitRunnable {
 		player.teleport(destination);
 		player.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, player.getLocation(), 10, 0.5, 0.5, 0.5);
 		
-		new EffectHandler.EffectRunnable(destination, 30, 1, "activate", material.createBlockData()).runTaskTimer(TreeWarp.treeWarp, 0, 1);
+		new EffectHandler.EffectRunnable(destination, 30, 1, "activate").runTaskTimer(TreeWarp.treeWarp, 0, 1);
 	}
 
 	private Location calculateWarpLocation() {

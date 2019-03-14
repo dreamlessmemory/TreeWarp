@@ -167,7 +167,7 @@ public class BlockListener implements Listener {
 
 		// Inform player
 		PlayerMessager.msg(player, LanguageReader.getText("Teleport_Prepare"));
-		new EffectHandler.EffectRunnable(player.getLocation(), 60, 1, "ready", itemStack.getType().createBlockData())
+		new EffectHandler.EffectRunnable(player.getLocation(), 60, 1, "ready")
 				.runTaskTimer(TreeWarp.treeWarp, 0, 1);
 		new TeleportHandler(event.getPlayer(), destination, player.getLocation(), itemStack.getType())
 				.runTaskLater(TreeWarp.treeWarp, 60);
