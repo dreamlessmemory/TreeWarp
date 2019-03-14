@@ -7,6 +7,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import de.tr7zw.itemnbtapi.NBTCompound;
 import de.tr7zw.itemnbtapi.NBTItem;
@@ -128,4 +129,22 @@ public class TreeHandler {
 		return leaf;
 	}
 	
+	public static class LeafRegrow extends BukkitRunnable{
+		
+		Location location;
+		Material material;
+		
+		public LeafRegrow(Location location, Material material) {
+			// TODO Auto-generated constructor stub
+			this.location = location;
+			this.material = material;
+		}
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			location.getWorld().getBlockAt(location).setType(material);
+		}
+		
+	}
 }
