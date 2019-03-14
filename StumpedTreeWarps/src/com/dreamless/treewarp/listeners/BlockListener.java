@@ -43,6 +43,10 @@ public class BlockListener implements Listener {
 		if (player == null)
 			return; // Ignore if not player made
 
+		if (!player.hasPermission("treewarp.user")) {
+			PlayerMessager.msg(player, LanguageReader.getText("Error_NoPermissions_Action"));
+		}
+
 		// Get Tree type
 		if (!TreeHandler.isPotentialTreeType(event.getSpecies()))
 			return; // Ignore if not valid tree type
@@ -54,21 +58,26 @@ public class BlockListener implements Listener {
 
 		NBTItem nbti = new NBTItem(inHand);
 
-		if (nbti.hasKey("TreeWarp")) {
+		if (!nbti.hasKey("TreeWarp"))
+			return;
 
-			/*** Actual processing here ***/
-
-			PlayerMessager.debugLog("Processing Tree");
-
-			// Cache
-			CacheHandler.updateCaches(event.getBlocks(), event.getLocation(), player);
-
-			// Database
-			DatabaseHandler.addTreeBlocks(event.getBlocks(), event.getLocation(), player);
-
-			// Messaging
-			PlayerMessager.msg(player, LanguageReader.getText("Tree_Grown"));
+		if (!player.hasPermission("treewarp.user")) {
+			PlayerMessager.msg(player, LanguageReader.getText("Error_NoPermissions_Action"));
+			return;
 		}
+
+		/*** Actual processing here ***/
+
+		PlayerMessager.debugLog("Processing Tree");
+
+		// Cache
+		CacheHandler.updateCaches(event.getBlocks(), event.getLocation(), player);
+
+		// Database
+		DatabaseHandler.addTreeBlocks(event.getBlocks(), event.getLocation(), player);
+
+		// Messaging
+		PlayerMessager.msg(player, LanguageReader.getText("Tree_Grown"));
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -109,7 +118,14 @@ public class BlockListener implements Listener {
 			return;
 		}
 
+		if (!player.hasPermission("treewarp.user")) {
+			PlayerMessager.msg(player, LanguageReader.getText("Error_NoPermissions_Deny"));
+			event.setCancelled(true);
+			return;
+		}
+
 		if (harvestingLeaves) { // Harvest a leaf
+
 			event.setCancelled(true);
 
 			location.getWorld().dropItem(location,
@@ -146,10 +162,15 @@ public class BlockListener implements Listener {
 			return;
 		} // else PlayerMessager.debugLog("Nope?");
 
-		/*** Actual processing here ***/
-
 		// Variables
 		Player player = event.getPlayer();
+
+		if (!player.hasPermission("treewarp.user")) {
+			PlayerMessager.msg(player, LanguageReader.getText("Error_NoPermissions_Action"));
+			return;
+		}
+
+		/*** Actual processing here ***/
 
 		// Get location
 		NBTCompound treeWarp = nbti.getCompound("TreeWarp");
@@ -157,7 +178,7 @@ public class BlockListener implements Listener {
 		Location destination;
 		if (treeWarp.hasKey("spawn")) {
 			destination = TeleportHandler.getSpawnWarpDestination();
-			if(destination == null) {
+			if (destination == null) {
 				PlayerMessager.msg(player, LanguageReader.getText("Teleport_No_Spawn"));
 				return;
 			}

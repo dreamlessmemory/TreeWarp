@@ -1,20 +1,31 @@
 package com.dreamless.treewarp.listeners;
 
+import java.io.IOException;
+import java.net.URL;
+import java.text.ParseException;
+import java.util.UUID;
+
+import org.apache.commons.io.IOUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
+import com.dreamless.treewarp.CacheHandler;
 import com.dreamless.treewarp.CustomRecipes;
+import com.dreamless.treewarp.DatabaseHandler;
 import com.dreamless.treewarp.LanguageReader;
 import com.dreamless.treewarp.PlayerMessager;
 import com.dreamless.treewarp.TeleportHandler;
 import com.dreamless.treewarp.TreeWarp;
+import com.dreamless.treewarp.TreeWarpUtils;
 
 public class CommandListener implements CommandExecutor {
 
-	@SuppressWarnings("unused")
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
@@ -23,44 +34,25 @@ public class CommandListener implements CommandExecutor {
 			cmd = args[0];
 		}
 
+		if (!sender.hasPermission("treewarp.admin")) {
+			PlayerMessager.msg(sender, LanguageReader.getText("Error_NoPermissions"));
+			return false;
+		}
+
 		if (cmd.equalsIgnoreCase("help")) {
 
 		} else if (cmd.equalsIgnoreCase("reload")) {
-
-			// if (sender.hasPermission("treewarp.cmd.reload")) {
-			if (true) {
-				TreeWarp.treeWarp.reload();
-				PlayerMessager.msg(sender, LanguageReader.getText("CMD_Reload"));
-			} else {
-				PlayerMessager.msg(sender, LanguageReader.getText("Error_NoPermissions"));
-			}
+			TreeWarp.treeWarp.reload();
+			PlayerMessager.msg(sender, LanguageReader.getText("CMD_Reload"));
 
 		} else if (cmd.equalsIgnoreCase("bonemeal")) {
-
-			// if (sender.hasPermission("treewarp.cmd.bonemeal")) {
-			if (true) {
-				cmdBonemeal(sender);
-			} else {
-				PlayerMessager.msg(sender, LanguageReader.getText("Error_NoPermissions"));
-			}
-
+			cmdBonemeal(sender);
 		} else if (cmd.equalsIgnoreCase("shears")) {
-
-			// if (sender.hasPermission("treewarp.cmd.bonemeal")) {
-			if (true) {
-				cmdShears(sender);
-			} else {
-				PlayerMessager.msg(sender, LanguageReader.getText("Error_NoPermissions"));
-			}
-
+			cmdShears(sender);
 		} else if (cmd.equalsIgnoreCase("spawn")) {
-
-			// if (sender.hasPermission("treewarp.cmd.bonemeal")) {
-			if (true) {
-				cmdSpawn(sender, args);
-			} else {
-				PlayerMessager.msg(sender, LanguageReader.getText("Error_NoPermissions"));
-			}
+			cmdSpawn(sender, args);
+		} else if (cmd.equalsIgnoreCase("clear")) {
+			cmdClearPlayer(sender, args);
 		}
 		return true;
 	}
@@ -77,6 +69,23 @@ public class CommandListener implements CommandExecutor {
 		}
 	}
 
+	private void cmdClearPlayer(CommandSender sender, String[] args) {
+		try {
+			Player player = Bukkit.getPlayer(getUUID(args[1]));
+			
+			if(player != null) {
+			
+			Location centerLocation = CacheHandler.removePlayerFromCache(player);
+			DatabaseHandler.removeTree(TreeWarpUtils.serializeLocation(centerLocation));
+			PlayerMessager.msg(sender, LanguageReader.getText("CMD_Player_Cleared", args[1]));
+			} else {
+				PlayerMessager.msg(sender, LanguageReader.getText("CMD_Player_Not_Cleared", args[1]));
+			}
+		} catch (ParseException | org.json.simple.parser.ParseException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private void cmdSpawn(CommandSender sender, String[] args) {
 		if (!(sender instanceof Player)) { // No console commands please
 			return;
@@ -102,4 +111,21 @@ public class CommandListener implements CommandExecutor {
 			player.getInventory().addItem(CustomRecipes.spawnLeafItem());
 		}
 	}
+	
+	private UUID getUUID(String name) throws ParseException, org.json.simple.parser.ParseException {
+        String url = "https://api.mojang.com/users/profiles/minecraft/"+name;
+        try {
+            String UUIDJson = IOUtils.toString(new URL(url), "US-ASCII");
+            if(UUIDJson.isEmpty()) {
+            	return null;
+            }
+            JSONObject UUIDObject = (JSONObject) JSONValue.parseWithException(UUIDJson);       
+            String tempID = UUIDObject.get("id").toString();
+            tempID = tempID.substring(0,  8) + "-" + tempID.substring(8,  12) + "-" + tempID.substring(12,  16) + "-" + tempID.substring(16,  20) + "-" + tempID.substring(20);
+            return UUID.fromString(tempID);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }       
+        return null;
+    }
 }

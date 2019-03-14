@@ -50,12 +50,21 @@ public class CacheHandler {
 			//PlayerMessager.debugLog("Removed old tree from player cache");
 		}
 	}
+	
+	public static Location removePlayerFromCache(Player player) {
+		Location centerLocation = playerToRoot.remove(player.getUniqueId().toString());
+		removeTreeFromCache(centerLocation);
+		
+		return centerLocation;
+	}
 
 	public static void addToTreeCache(List<BlockState> list, Location location) {
 		for (BlockState blockState : list) {
 			leafToRoot.put(blockState.getLocation(), location);
 		}
 	}
+	
+	
 
 	/*** Lookup ***/
 

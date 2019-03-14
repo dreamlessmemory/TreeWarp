@@ -1,5 +1,5 @@
 name: StumpedTreeWarp
-version: 0.0.0-Alpha
+version: 1.0.0-Beta
 description: Create special trees allow players to warp
 main: com.dreamless.treewarp.TreeWarp
 api-version: 1.13
@@ -11,8 +11,7 @@ commands:
     description: Command for Administration
     aliases: [tree, tw]
 permissions:
-# -- Commands --
-  brewery.cmd.bonemeal:
-    description: Give special bonemeal
-  brewery.cmd.reload:
-    description: Reload config
+  treewarp.admin:
+    description: All permissions related to setup of TreeWarp
+  treewarp.user:
+    description: Allows for the creation of leaves and use of warps

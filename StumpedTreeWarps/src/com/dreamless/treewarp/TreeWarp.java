@@ -10,7 +10,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.dreamless.treewarp.listeners.BlockListener;
 import com.dreamless.treewarp.listeners.CommandListener;
-import com.dreamless.treewarp.listeners.PlayerListener;
 import com.mysql.jdbc.Connection;
 
 public class TreeWarp extends JavaPlugin {
@@ -29,7 +28,6 @@ public class TreeWarp extends JavaPlugin {
 
 	// Listeners
 	public BlockListener blockListener;
-	public PlayerListener playerListener;
 
 	// debug
 	public static boolean debug;
@@ -77,11 +75,9 @@ public class TreeWarp extends JavaPlugin {
 
 		// Listeners
 		blockListener = new BlockListener();
-		playerListener = new PlayerListener();
 		getCommand("TreeWarp").setExecutor(new CommandListener());
 
 		treeWarp.getServer().getPluginManager().registerEvents(blockListener, treeWarp);
-		treeWarp.getServer().getPluginManager().registerEvents(playerListener, treeWarp);
 
 		PlayerMessager.log(this.getDescription().getName() + " enabled!");
 	}
