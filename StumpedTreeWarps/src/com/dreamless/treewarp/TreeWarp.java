@@ -56,6 +56,7 @@ public class TreeWarp extends JavaPlugin {
 		}
 		
 		// Load data
+		DataHandler.loadSpawnArea();
 
 		// SQL Setup
 		try { // We use a try catch to avoid errors, hopefully we don't get any.

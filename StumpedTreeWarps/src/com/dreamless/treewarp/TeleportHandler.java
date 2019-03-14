@@ -99,7 +99,7 @@ public class TeleportHandler extends BukkitRunnable {
 			return;
 		}
 
-		PlayerMessager.msg(player, LanguageReader.getText("Teleport_Confirmed"));
+		PlayerMessager.msg(player, LanguageReader.getText(spawn? "Teleport_Spawn" : "Teleport_Confirmed"));
 		
 		if(!spawn) {
 		destination = calculateWarpLocation();
