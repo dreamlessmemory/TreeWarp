@@ -3,11 +3,13 @@ package com.dreamless.treewarp.listeners;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 
 import com.dreamless.treewarp.CustomRecipes;
 import com.dreamless.treewarp.LanguageReader;
 import com.dreamless.treewarp.PlayerMessager;
+import com.dreamless.treewarp.TeleportHandler;
 import com.dreamless.treewarp.TreeWarp;
 
 public class CommandListener implements CommandExecutor{
@@ -51,6 +53,14 @@ public class CommandListener implements CommandExecutor{
 				PlayerMessager.msg(sender, LanguageReader.getText("Error_NoPermissions"));
 			}
 
+		} else if (cmd.equalsIgnoreCase("spawn")) {
+
+			//if (sender.hasPermission("treewarp.cmd.bonemeal")) {
+			if (true) {
+				cmdSpawn(sender, args);
+			} else {
+				PlayerMessager.msg(sender, LanguageReader.getText("Error_NoPermissions"));
+			}
 		}
 		return true;
 	}
@@ -64,6 +74,25 @@ public class CommandListener implements CommandExecutor{
 	private void cmdShears(CommandSender sender) {
 		if(sender instanceof Player) {
 			((Player)sender).getInventory().addItem(CustomRecipes.shearsItem());
+		}
+	}
+	
+	private void cmdSpawn(CommandSender sender, String[] args) {
+		if(!(sender instanceof Player)) { //No console commands please
+			return;
+		}
+		
+		if(args[1].equalsIgnoreCase("set")){
+			if(TeleportHandler.addCorner(((Player)sender).getLocation().getBlock().getLocation())) {
+				PlayerMessager.msg(sender, LanguageReader.getText("CMD_Spawn_Success"));
+			} else {
+				PlayerMessager.msg(sender, LanguageReader.getText("CMD_Spawn_Failure"));
+			}
+		} else if (args[1].equalsIgnoreCase("clear")) {
+			TeleportHandler.clearSpawn();
+			PlayerMessager.msg(sender, LanguageReader.getText("CMD_Spawn_Cleared"));
+		} else if (args[1].equalsIgnoreCase("leaf")) {
+			((Player)sender).getInventory().addItem(CustomRecipes.spawnLeafItem());
 		}
 	}
 }

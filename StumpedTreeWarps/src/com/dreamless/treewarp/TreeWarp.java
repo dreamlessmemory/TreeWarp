@@ -54,6 +54,8 @@ public class TreeWarp extends JavaPlugin {
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
+		
+		// Load data
 
 		// SQL Setup
 		try { // We use a try catch to avoid errors, hopefully we don't get any.

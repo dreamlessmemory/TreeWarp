@@ -30,7 +30,7 @@ import de.tr7zw.itemnbtapi.NBTCompound;
 import de.tr7zw.itemnbtapi.NBTItem;
 
 public class BlockListener implements Listener {
-	
+
 	public static int durabilityLoss = 0;
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -65,7 +65,7 @@ public class BlockListener implements Listener {
 
 			// Database
 			DatabaseHandler.addTreeBlocks(event.getBlocks(), event.getLocation(), player);
-			
+
 			// Messaging
 			PlayerMessager.msg(player, LanguageReader.getText("Tree_Grown"));
 		}
@@ -91,10 +91,10 @@ public class BlockListener implements Listener {
 			if (nbti.hasKey("TreeWarp")) {
 				// PlayerMessager.debugLog("Leaf harvesting");
 				harvestingLeaves = true;
-				
-				//Handle degradation
-				
-				Damageable itemMeta = (Damageable)item.getItemMeta();
+
+				// Handle degradation
+
+				Damageable itemMeta = (Damageable) item.getItemMeta();
 				itemMeta.setDamage(itemMeta.getDamage() + durabilityLoss);
 				item.setItemMeta((ItemMeta) itemMeta);
 			} // else PlayerMessager.debugLog("Nope?");
@@ -111,10 +111,11 @@ public class BlockListener implements Listener {
 
 		if (harvestingLeaves) { // Harvest a leaf
 			event.setCancelled(true);
-			
-			location.getWorld().dropItem(location, TreeHandler.getWarpLeaf(clickedBlock.getType(), player, warpLocation));
+
+			location.getWorld().dropItem(location,
+					TreeHandler.getWarpLeaf(clickedBlock.getType(), player, warpLocation));
 			location.getWorld().getBlockAt(location).setType(Material.AIR);
-			
+
 			new TreeHandler.LeafRegrow(location, clickedBlock.getType()).runTaskLater(TreeWarp.treeWarp, 20);
 		} else {
 			if (TreeHandler.isPotentialLeaf(clickedBlock.getType())) {// Remove just the leaf
@@ -152,9 +153,18 @@ public class BlockListener implements Listener {
 
 		// Get location
 		NBTCompound treeWarp = nbti.getCompound("TreeWarp");
-		Location destination = new Location(Bukkit.getWorld(treeWarp.getString("world")), treeWarp.getDouble("x"),
-				treeWarp.getDouble("y"), treeWarp.getDouble("z"));
 
+		Location destination;
+		if (treeWarp.hasKey("spawn")) {
+			destination = TeleportHandler.getSpawnWarpDestination();
+			if(destination == null) {
+				PlayerMessager.msg(player, LanguageReader.getText("Teleport_No_Spawn"));
+				return;
+			}
+		} else {
+			destination = new Location(Bukkit.getWorld(treeWarp.getString("world")), treeWarp.getDouble("x"),
+					treeWarp.getDouble("y"), treeWarp.getDouble("z"));
+		}
 		// Remove leaf item
 		item.setPickupDelay(1000);
 		new BukkitRunnable() {
@@ -167,8 +177,7 @@ public class BlockListener implements Listener {
 
 		// Inform player
 		PlayerMessager.msg(player, LanguageReader.getText("Teleport_Prepare"));
-		new EffectHandler.EffectRunnable(player.getLocation(), 60, 1, "ready")
-				.runTaskTimer(TreeWarp.treeWarp, 0, 1);
+		new EffectHandler.EffectRunnable(player.getLocation(), 60, 1, "ready").runTaskTimer(TreeWarp.treeWarp, 0, 1);
 		new TeleportHandler(event.getPlayer(), destination, player.getLocation(), itemStack.getType())
 				.runTaskLater(TreeWarp.treeWarp, 60);
 	}
