@@ -133,9 +133,13 @@ public class TreeWarp extends JavaPlugin {
 		EffectHandler.ANGLE = currentConfig.getInt("angle", 25);
 		EffectHandler.PARTICLE_COUNT = currentConfig.getInt("particles", 7);
 		EffectHandler.RADIUS = currentConfig.getDouble("radius", 1);
+		EffectHandler.AMBIENT_EFFECT_COUNT = currentConfig.getInt("ambientcount", 5);
+		EffectHandler.AMBIENT_EFFECT_INTERVAL = currentConfig.getInt("ambientinterval", 3);
+		EffectHandler.AMBIENT_PARTICLE_COUNT = currentConfig.getInt("ambientparticles", 7);
 		
 		// Balancing
 		BlockListener.durabilityLoss = currentConfig.getInt("cost", 0);
+		TeleportHandler.DISTANCE = currentConfig.getDouble("distancesquared", 4);
 		
 		/*** text.yml ***/
 		currentFile = new File(treeWarp.getDataFolder(), "text.yml");
@@ -144,6 +148,9 @@ public class TreeWarp extends JavaPlugin {
 		}
 		
 		LanguageReader.loadEntries(currentFile);
+		
+		// Continuous
+		new EffectHandler.EffectContinuousRunnable().runTaskTimer(treeWarp, 20, EffectHandler.AMBIENT_EFFECT_INTERVAL * 20);
 
 		return true;
 	}

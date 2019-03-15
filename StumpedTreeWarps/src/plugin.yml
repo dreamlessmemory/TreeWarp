@@ -1,5 +1,5 @@
 name: StumpedTreeWarp
-version: 1.0.0-Beta
+version: 1.0.0-RC
 description: Create special trees allow players to warp
 main: com.dreamless.treewarp.TreeWarp
 api-version: 1.13

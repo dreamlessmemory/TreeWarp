@@ -2,6 +2,8 @@ package com.dreamless.treewarp.listeners;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -77,6 +79,9 @@ public class BlockListener implements Listener {
 
 		// Messaging
 		PlayerMessager.msg(player, LanguageReader.getText("Tree_Grown"));
+		
+		// Sound Effects
+		player.getWorld().playSound(event.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -133,6 +138,10 @@ public class BlockListener implements Listener {
 			location.getWorld().getBlockAt(location).setType(Material.AIR);
 
 		} else {
+			
+			location.getWorld().playSound(clickedBlock.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, 1, 1);
+			location.getWorld().spawnParticle(Particle.END_ROD, location.clone().add(0.5, 0.5, 0.5), 8, 0.5, 0.5, 0.5);
+			
 			if (TreeHandler.isPotentialLeaf(clickedBlock.getType())) {// Remove just the leaf
 				CacheHandler.removeLeafFromCache(location);
 				DatabaseHandler.removeLeafBlock(location);
@@ -205,6 +214,10 @@ public class BlockListener implements Listener {
 
 		// Inform player
 		PlayerMessager.msg(player, LanguageReader.getText(spawn? "Teleport_Prepare_Spawn" : "Teleport_Prepare", treeWarp.getString("player")));
+		
+		player.getWorld().playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5f, 1.25f);
+		
+		//Delayed handlers
 		new EffectHandler.EffectRunnable(player.getLocation(), 60, 1, "ready").runTaskTimer(TreeWarp.treeWarp, 0, 1);
 		new TeleportHandler(event.getPlayer(), destination, player.getLocation(), treeWarp.hasKey("spawn"), treeWarp.getString("player"))
 				.runTaskLater(TreeWarp.treeWarp, 60);

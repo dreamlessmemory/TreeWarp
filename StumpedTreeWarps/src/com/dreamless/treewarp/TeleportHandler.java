@@ -5,6 +5,7 @@ import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -12,8 +13,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class TeleportHandler extends BukkitRunnable {
 
-	private static int RADIUS = 2;
-	private static double DISTANCE = 4;
+	static int RADIUS = 2;
+	public static double DISTANCE = 4;
 	private static Random random = new Random();
 
 	// Spawn
@@ -107,11 +108,17 @@ public class TeleportHandler extends BukkitRunnable {
 			destination = calculateWarpLocation();
 		}
 		prepareWarpLocation(destination);
-
+		// Effects at origin
 		player.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, player.getLocation(), 10, 0.5, 0.5, 0.5);
+		player.getWorld().playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRIGGER, 0.5f, 1f);
+		
+		// Teleport
 		player.teleport(destination);
+		
+		//Effects at Destination
 		player.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, player.getLocation(), 10, 0.5, 0.5, 0.5);
-
+		player.getWorld().playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRIGGER, 0.5f, 1f);
+		
 		new EffectHandler.EffectRunnable(destination, 30, 1, "activate").runTaskTimer(TreeWarp.treeWarp, 0, 1);
 	}
 
