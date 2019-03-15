@@ -1,5 +1,8 @@
 package com.dreamless.treewarp.listeners;
 
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -133,8 +136,10 @@ public class BlockListener implements Listener {
 			event.setCancelled(true);
 			new TreeHandler.LeafRegrow(location, clickedBlock.getType()).runTaskLater(TreeWarp.treeWarp, 20);
 			
+			Player ownerPlayer = Bukkit.getPlayer(UUID.fromString(CacheHandler.getTreeOwner(warpLocation)));
+			
 			location.getWorld().dropItem(location,
-					TreeHandler.getWarpLeaf(clickedBlock.getType(), player, warpLocation));
+					TreeHandler.getWarpLeaf(clickedBlock.getType(), ownerPlayer, warpLocation));
 			location.getWorld().getBlockAt(location).setType(Material.AIR);
 
 		} else {

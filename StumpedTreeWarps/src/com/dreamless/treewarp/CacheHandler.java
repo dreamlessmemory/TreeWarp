@@ -78,7 +78,14 @@ public class CacheHandler {
 		return playerToRoot.get(player);
 	}
 	
-	
+	public static String getTreeOwner(Location location) {
+		for(java.util.Map.Entry<String, Location> entry : playerToRoot.entrySet()) {
+			if(entry.getValue().equals(location)) {
+				return entry.getKey();
+			}
+		}
+		return null;
+	}
 
 	public static boolean containsTree(Location location) {
 		return leafToRoot.containsKey(location);
