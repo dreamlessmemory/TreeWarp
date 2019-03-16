@@ -1,11 +1,8 @@
 package com.dreamless.treewarp;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import de.tr7zw.itemnbtapi.NBTCompound;
@@ -15,18 +12,7 @@ import de.tr7zw.itemnbtapi.NBTItem;
 
 public class CustomRecipes {
 	
-	public static void registerRecipes() {
-		Bukkit.addRecipe(bonemealRecipe());
-	}
-
-	private static ShapedRecipe bonemealRecipe() {
-		ItemStack item = new ItemStack(Material.BONE_MEAL);
-
-		NamespacedKey key = new NamespacedKey(TreeWarp.treeWarp, "laithorn_essence");
-		return new ShapedRecipe(key, item);
-	}
-	
-	public static ItemStack bonemealItem() {
+	public static ItemStack essenceItem() {
 		ItemStack item = new ItemStack(Material.BONE_MEAL);
 		
 		/*** Item Meta ***/
@@ -47,7 +33,7 @@ public class CustomRecipes {
 		/*** NBT ***/
 		NBTItem nbti = new NBTItem(item);
 		
-		nbti.addCompound("TreeWarp");
+		nbti.addCompound("Laithorn");
 		
 		item = nbti.getItem();
 		
