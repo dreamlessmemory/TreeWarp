@@ -62,7 +62,7 @@ public class BlockListener implements Listener {
 
 		NBTItem nbti = new NBTItem(inHand);
 
-		if (!nbti.hasKey("TreeWarp"))
+		if (!nbti.hasKey("Laithorn"))
 			return;
 
 		if (!player.hasPermission("treewarp.user")) {
@@ -104,7 +104,7 @@ public class BlockListener implements Listener {
 		ItemStack item = player.getInventory().getItemInMainHand();
 		if (item.getType() == Material.SHEARS) {
 			NBTItem nbti = new NBTItem(item);
-			if (nbti.hasKey("Laithorn")) {
+			if (nbti.hasKey("TreeWarp")) {
 				// PlayerMessager.debugLog("Leaf harvesting");
 				harvestingLeaves = true;
 

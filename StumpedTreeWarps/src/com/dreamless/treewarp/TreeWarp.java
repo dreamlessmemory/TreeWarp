@@ -8,6 +8,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.dreamless.treewarp.listeners.AnvilListener;
 import com.dreamless.treewarp.listeners.BlockListener;
 import com.dreamless.treewarp.listeners.CommandListener;
 import com.mysql.jdbc.Connection;
@@ -28,6 +29,7 @@ public class TreeWarp extends JavaPlugin {
 
 	// Listeners
 	public BlockListener blockListener;
+	public AnvilListener anvilListener;
 
 	// debug
 	public static boolean debug;
@@ -75,9 +77,11 @@ public class TreeWarp extends JavaPlugin {
 
 		// Listeners
 		blockListener = new BlockListener();
+		anvilListener = new AnvilListener();
 		getCommand("TreeWarp").setExecutor(new CommandListener());
 
 		treeWarp.getServer().getPluginManager().registerEvents(blockListener, treeWarp);
+		treeWarp.getServer().getPluginManager().registerEvents(anvilListener, treeWarp);
 
 		PlayerMessager.log(this.getDescription().getName() + " enabled!");
 	}
@@ -138,7 +142,9 @@ public class TreeWarp extends JavaPlugin {
 		EffectHandler.AMBIENT_PARTICLE_COUNT = currentConfig.getInt("ambientparticles", 7);
 		
 		// Balancing
-		BlockListener.durabilityLoss = currentConfig.getInt("cost", 0);
+		BlockListener.durabilityLoss = currentConfig.getInt("shearsusecost", 0);
+		AnvilListener.REPAIR_RATE = currentConfig.getInt("shearsrepairrate", 50);
+		AnvilListener.CREATION_COST = currentConfig.getInt("shearscreationcost", 5);
 		TeleportHandler.DISTANCE = currentConfig.getDouble("distancesquared", 4);
 		
 		/*** text.yml ***/

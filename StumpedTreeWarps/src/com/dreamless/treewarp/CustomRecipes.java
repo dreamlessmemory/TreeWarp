@@ -34,6 +34,8 @@ public class CustomRecipes {
 		NBTItem nbti = new NBTItem(item);
 		
 		nbti.addCompound("Laithorn");
+		//NBTCompound laithorn = nbti.addCompound("Laithorn");
+		//laithorn.setString("laithorn", "laithorn");
 		
 		item = nbti.getItem();
 		
