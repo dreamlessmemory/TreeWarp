@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>StumpedTreeWarps</groupId>
 	<artifactId>StumpedTreeWarps</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-RELEASE</version>
 	<name>StumpedTreeWarps</name>
 	<description>A player warp system utilizing trees</description>
 	<build>
