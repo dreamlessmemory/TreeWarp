@@ -86,6 +86,9 @@ public class TreeWarp extends JavaPlugin {
 		treeWarp.getServer().getPluginManager().registerEvents(blockListener, treeWarp);
 		treeWarp.getServer().getPluginManager().registerEvents(anvilListener, treeWarp);
 		treeWarp.getServer().getPluginManager().registerEvents(craftListener, treeWarp);
+		
+		// Custom Recipes
+		CustomRecipes.registerRecipes();
 
 		PlayerMessager.log(this.getDescription().getName() + " enabled!");
 	}
@@ -148,7 +151,6 @@ public class TreeWarp extends JavaPlugin {
 		// Balancing
 		BlockListener.durabilityLoss = currentConfig.getInt("shearsusecost", 0);
 		AnvilListener.REPAIR_RATE = currentConfig.getInt("shearsrepairrate", 50);
-		AnvilListener.CREATION_COST = currentConfig.getInt("shearscreationcost", 5);
 		TeleportHandler.DISTANCE = currentConfig.getDouble("distancesquared", 4);
 		
 		/*** text.yml ***/

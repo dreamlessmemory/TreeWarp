@@ -1,8 +1,11 @@
 package com.dreamless.treewarp;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import de.tr7zw.itemnbtapi.NBTCompound;
@@ -11,6 +14,22 @@ import de.tr7zw.itemnbtapi.NBTItem;
 //import com.dreamless.treewarp.TreeWarp;
 
 public class CustomRecipes {
+	
+	public static void registerRecipes() {
+		
+		ItemStack shears = shearsItem();
+		
+		NamespacedKey key = new NamespacedKey(TreeWarp.treeWarp, "magicked_shears");
+		
+		ShapedRecipe recipe = new ShapedRecipe(key, shears);
+		
+		recipe.shape("EEE", "ESE", "EEE");
+		recipe.setIngredient('E', Material.BONE_MEAL);
+		recipe.setIngredient('S', Material.SHEARS);
+		
+		Bukkit.addRecipe(recipe);
+		
+	}
 	
 	public static ItemStack essenceItem() {
 		ItemStack item = new ItemStack(Material.BONE_MEAL);

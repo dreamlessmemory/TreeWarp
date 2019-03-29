@@ -20,7 +20,6 @@ import de.tr7zw.itemnbtapi.NBTItem;
 public class AnvilListener implements Listener {
 
 	public static int REPAIR_RATE = 50;
-	public static int CREATION_COST = 5;
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onAnvilPrepare(PrepareAnvilEvent event) {
@@ -46,18 +45,17 @@ public class AnvilListener implements Listener {
 		NBTItem shearsNBT = new NBTItem(leftSide);
 		if (shearsNBT.hasKey("TreeWarp")) { // Repairing
 			result = repairShears(leftSide, rightSide);
-			inventory.setRepairCost(0);
-		} else { // New Shears
-			result = createShears(leftSide, rightSide);
-			inventory.setRepairCost(5);
+		} else {
+			return;
 		}
 		
 		// Rename handling
-		if (result != null && !inventory.getRenameText().isEmpty()) {
+		if (!inventory.getRenameText().isEmpty()) {
 			ItemMeta meta = result.getItemMeta();
 			meta.setDisplayName(inventory.getRenameText());
 			result.setItemMeta(meta);
 		}
+		
 		event.setResult(result);
 	}
 	
@@ -110,25 +108,6 @@ public class AnvilListener implements Listener {
 		repairedShears.setItemMeta((ItemMeta) damageable);
 
 		return repairedShears;
-	}
-
-	private ItemStack createShears(ItemStack shears, ItemStack essence) {
-		PlayerMessager.debugLog("Create");
-		if (essence.getAmount() < CREATION_COST) {
-			PlayerMessager.debugLog("Not enough");
-			return null;
-		}
-
-		ItemStack newShears = CustomRecipes.shearsItem();
-
-		Damageable oldDamageable = (Damageable) shears.getItemMeta();
-		Damageable newDamageable = (Damageable) newShears.getItemMeta();
-
-		newDamageable.setDamage(oldDamageable.getDamage());
-
-		newShears.setItemMeta((ItemMeta) newDamageable);
-
-		return newShears;
 	}
 	
 }

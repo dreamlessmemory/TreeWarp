@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 
 import com.dreamless.treewarp.CustomRecipes;
 
@@ -16,30 +17,26 @@ public class CraftingBenchListener implements Listener{
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onPrepareItemCraftEvent(PrepareItemCraftEvent event) {
+		
+		Recipe recipe = event.getRecipe();
+		if(recipe == null || !recipe.getResult().isSimilar(CustomRecipes.shearsItem()))
+			return; // Ignore if it's not the shears recipe
+		
 		CraftingInventory inventory = event.getInventory();
-		ItemStack[] matrix = inventory.getMatrix();
-
-		if (matrix.length < 9)
-			return; // Not crafting bench, ignore
-
-		ItemStack center = matrix[4];
-		if (center == null || center.getType() != Material.SHEARS)
-			return; // no shears in center
 		
-		if(!surroundedByEssence(matrix))
-			return; // not surrounded by Essence
-		
-		inventory.setResult(CustomRecipes.shearsItem());
+		if(!surroundedByEssence(inventory)) {
+			inventory.setResult(new ItemStack(Material.AIR)); // Effectively cancel event if not the right bonemeal
+		} 
 	}
 
-	private static boolean surroundedByEssence(ItemStack[] matrix) {
+	private static boolean surroundedByEssence(CraftingInventory inventory) {
+		ItemStack[] matrix = inventory.getMatrix();
 		for (int i = 0; i < matrix.length; i++) {
 			if (i == 4)
 				continue; // ignore the center
 			if (!isEssence(matrix[i]))
 				return false;
 		}
-
 		return true;
 	}
 
