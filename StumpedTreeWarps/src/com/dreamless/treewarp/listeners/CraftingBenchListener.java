@@ -13,15 +13,18 @@ import com.dreamless.treewarp.CustomRecipes;
 
 import de.tr7zw.itemnbtapi.NBTItem;
 
-public class CraftingBenchListener implements Listener{
+public class CraftingBenchListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onPrepareItemCraftEvent(PrepareItemCraftEvent event) {
 		
 		Recipe recipe = event.getRecipe();
-		if(recipe == null || !recipe.getResult().isSimilar(CustomRecipes.shearsItem()))
-			return; // Ignore if it's not the shears recipe
+		if(recipe == null)
+			return; // Ignore if no recipe
 		
+		if(!recipe.getResult().isSimilar(CustomRecipes.shearsItem()) && !recipe.getResult().isSimilar(CustomRecipes.spawnLeafItem())) {
+			return; // Ignore if it's not the shears or leaf recipe
+		}
 		CraftingInventory inventory = event.getInventory();
 		
 		if(!surroundedByEssence(inventory)) {
