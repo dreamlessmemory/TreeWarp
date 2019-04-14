@@ -17,6 +17,9 @@ import de.tr7zw.itemnbtapi.NBTItem;
 //import com.dreamless.treewarp.TreeWarp;
 
 public class CustomRecipes {
+	
+	public static final String SHEARS_REPAIR_STRING = "shears_repair";
+	public static final String SHEARS_CREATE_STRING = "shears_create";
 
 	public static void registerRecipes() {
 		Bukkit.addRecipe(shearsRecipe());

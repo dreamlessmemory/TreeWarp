@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.dreamless.laithorn.RequirementsHandler;
 import com.dreamless.treewarp.CustomRecipes;
 import com.dreamless.treewarp.PlayerMessager;
 
@@ -37,6 +38,8 @@ public class AnvilListener implements Listener {
 
 		if (!bonemealNBT.hasKey("Laithorn")) // Ignore if not essence
 			return;
+		
+		if(!RequirementsHandler.canDoAction((Player) event.getView().getPlayer(), CustomRecipes.SHEARS_REPAIR_STRING, null));
 
 		/*** Processing ***/
 

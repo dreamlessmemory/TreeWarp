@@ -76,10 +76,10 @@
 			<artifactId>Item-NBT-API</artifactId>
 			<version>-SNAPSHOT</version>
 		</dependency>
-			<dependency>
-	    <groupId>com.github.dreamlessmemory</groupId>
-	    <artifactId>LaithornsGrace</artifactId>
-	    <version>3fd54ea7d8</version>
-	</dependency>
+		<dependency>
+	    	<groupId>com.github.dreamlessmemory</groupId>
+	    	<artifactId>LaithornsGrace</artifactId>
+	    	<version>7c7dd24a92</version>
+		</dependency>
 	</dependencies>
 </project>

@@ -10,7 +10,7 @@ import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 
-import com.dreamless.laithorn.RecipeHandler;
+import com.dreamless.laithorn.RequirementsHandler;
 import com.dreamless.treewarp.CustomRecipes;
 
 import de.tr7zw.itemnbtapi.NBTItem;
@@ -33,7 +33,7 @@ public class CraftingBenchListener implements Listener {
 			inventory.setResult(new ItemStack(Material.AIR)); // Effectively cancel event if not the right bonemeal
 		}
 		
-		if(!RecipeHandler.canDoAction((Player) event.getView().getPlayer(), "create_shears")) {
+		if(!RequirementsHandler.canDoAction((Player) event.getView().getPlayer(), CustomRecipes.SHEARS_CREATE_STRING, null)) {
 			inventory.setResult(new ItemStack(Material.AIR)); // Effectively cancel event if not the right level
 		}
 	}

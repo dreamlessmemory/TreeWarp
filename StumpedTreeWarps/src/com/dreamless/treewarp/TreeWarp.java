@@ -14,7 +14,7 @@ import com.dreamless.treewarp.listeners.CommandListener;
 import com.dreamless.treewarp.listeners.CraftingBenchListener;
 import com.mysql.jdbc.Connection;
 
-import com.dreamless.laithorn.RecipeHandler;
+import com.dreamless.laithorn.RequirementsHandler;
 
 public class TreeWarp extends JavaPlugin {
 
@@ -91,10 +91,7 @@ public class TreeWarp extends JavaPlugin {
 		
 		// Custom Recipes
 		CustomRecipes.registerRecipes();
-		
-		RecipeHandler.registerRecipe("create_shears", 10);
-		RecipeHandler.registerRecipe("repair_shears", 20);
-
+			
 		PlayerMessager.log(this.getDescription().getName() + " enabled!");
 	}
 
@@ -157,6 +154,8 @@ public class TreeWarp extends JavaPlugin {
 		BlockListener.durabilityLoss = currentConfig.getInt("shearsusecost", 0);
 		AnvilListener.REPAIR_RATE = currentConfig.getInt("shearsrepairrate", 50);
 		TeleportHandler.DISTANCE = currentConfig.getDouble("distancesquared", 4);
+		RequirementsHandler.registerRecipe(CustomRecipes.SHEARS_CREATE_STRING, currentConfig.getInt("shears_create_level", 1));
+		RequirementsHandler.registerRecipe(CustomRecipes.SHEARS_REPAIR_STRING, currentConfig.getInt("shears_repair_level", 2));
 		
 		/*** text.yml ***/
 		currentFile = new File(treeWarp.getDataFolder(), "text.yml");
