@@ -14,6 +14,8 @@ import com.dreamless.treewarp.listeners.CommandListener;
 import com.dreamless.treewarp.listeners.CraftingBenchListener;
 import com.mysql.jdbc.Connection;
 
+import com.dreamless.laithorn.RecipeHandler;
+
 public class TreeWarp extends JavaPlugin {
 
 	public static TreeWarp treeWarp;
@@ -89,6 +91,9 @@ public class TreeWarp extends JavaPlugin {
 		
 		// Custom Recipes
 		CustomRecipes.registerRecipes();
+		
+		RecipeHandler.registerRecipe("create_shears", 10);
+		RecipeHandler.registerRecipe("repair_shears", 20);
 
 		PlayerMessager.log(this.getDescription().getName() + " enabled!");
 	}

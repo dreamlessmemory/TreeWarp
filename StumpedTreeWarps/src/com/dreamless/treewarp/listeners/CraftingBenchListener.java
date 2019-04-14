@@ -1,6 +1,7 @@
 package com.dreamless.treewarp.listeners;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -9,6 +10,7 @@ import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 
+import com.dreamless.laithorn.RecipeHandler;
 import com.dreamless.treewarp.CustomRecipes;
 
 import de.tr7zw.itemnbtapi.NBTItem;
@@ -29,7 +31,11 @@ public class CraftingBenchListener implements Listener {
 		
 		if(!surroundedByEssence(inventory)) {
 			inventory.setResult(new ItemStack(Material.AIR)); // Effectively cancel event if not the right bonemeal
-		} 
+		}
+		
+		if(!RecipeHandler.canDoAction((Player) event.getView().getPlayer(), "create_shears")) {
+			inventory.setResult(new ItemStack(Material.AIR)); // Effectively cancel event if not the right level
+		}
 	}
 
 	private static boolean surroundedByEssence(CraftingInventory inventory) {

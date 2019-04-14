@@ -5,7 +5,7 @@ main: com.dreamless.treewarp.TreeWarp
 api-version: 1.13
 authors: [DreamlessMemory/MemoryReborn]
 prefix: TreeWarp
-depend: [ItemNBTAPI]
+depend: [ItemNBTAPI, LaithornsGrace]
 commands:
   TreeWarp:
     description: Command for Administration

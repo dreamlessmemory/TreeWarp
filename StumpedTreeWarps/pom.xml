@@ -76,5 +76,10 @@
 			<artifactId>Item-NBT-API</artifactId>
 			<version>-SNAPSHOT</version>
 		</dependency>
+			<dependency>
+	    <groupId>com.github.dreamlessmemory</groupId>
+	    <artifactId>LaithornsGrace</artifactId>
+	    <version>3fd54ea7d8</version>
+	</dependency>
 	</dependencies>
 </project>
