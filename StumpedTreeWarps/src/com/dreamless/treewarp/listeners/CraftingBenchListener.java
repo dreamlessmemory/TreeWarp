@@ -13,28 +13,39 @@ import org.bukkit.inventory.Recipe;
 import com.dreamless.laithorn.RequirementsHandler;
 import com.dreamless.treewarp.CustomRecipes;
 
+import de.tr7zw.itemnbtapi.NBTCompound;
 import de.tr7zw.itemnbtapi.NBTItem;
 
 public class CraftingBenchListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onPrepareItemCraftEvent(PrepareItemCraftEvent event) {
-		
+
 		Recipe recipe = event.getRecipe();
-		if(recipe == null)
+		if (recipe == null)
 			return; // Ignore if no recipe
-		
-		if(!recipe.getResult().isSimilar(CustomRecipes.shearsItem()) && !recipe.getResult().isSimilar(CustomRecipes.spawnLeafItem())) {
-			return; // Ignore if it's not the shears or leaf recipe
-		}
+
+		ItemStack result = recipe.getResult();
 		CraftingInventory inventory = event.getInventory();
-		
-		if(!surroundedByEssence(inventory)) {
-			inventory.setResult(new ItemStack(Material.AIR)); // Effectively cancel event if not the right bonemeal
-		}
-		
-		if(!RequirementsHandler.canDoAction((Player) event.getView().getPlayer(), CustomRecipes.SHEARS_CREATE_STRING, null)) {
-			inventory.setResult(new ItemStack(Material.AIR)); // Effectively cancel event if not the right level
+
+		if (result.isSimilar(CustomRecipes.shearsItem()) || result.isSimilar(CustomRecipes.spawnLeafItem())) {
+			if (!surroundedByEssence(inventory)) {
+				inventory.setResult(new ItemStack(Material.AIR)); // Effectively cancel event if not the right bonemeal
+			}
+
+			if (!RequirementsHandler.canDoAction((Player) event.getView().getPlayer(),
+					CustomRecipes.SHEARS_CREATE_STRING, null)) {
+				inventory.setResult(new ItemStack(Material.AIR)); // Effectively cancel event if not the right level
+			}
+		} else if (result.isSimilar(CustomRecipes.magicBonemealItem())) {
+			if (!checkForCorrectFragment(inventory))
+				inventory.setResult(new ItemStack(Material.AIR));
+			if (!RequirementsHandler.canDoAction((Player) event.getView().getPlayer(),
+					CustomRecipes.BONEMEAL_CREATE_STRING, null)) {
+				inventory.setResult(new ItemStack(Material.AIR)); // Effectively cancel event if not the right level
+			}
+		} else {
+			return;
 		}
 	}
 
@@ -47,6 +58,26 @@ public class CraftingBenchListener implements Listener {
 				return false;
 		}
 		return true;
+	}
+
+	private static boolean checkForCorrectFragment(CraftingInventory inventory) {
+		ItemStack[] matrix = inventory.getMatrix();
+		for (int i = 0; i < matrix.length; i++) {
+			ItemStack itemStack = matrix[i];
+			if (itemStack == null)
+				continue;
+			if (itemStack.getType() == com.dreamless.laithorn.CustomRecipes.fragmentItem("DULL").getType()) {
+				NBTItem nbti = new NBTItem(itemStack);
+				NBTCompound laithorn = nbti.getCompound("Laithorn");
+				if (laithorn == null)
+					return false;
+				for (String key : laithorn.getKeys()) {
+					if (laithorn.getString(key).equalsIgnoreCase("DULL"))
+						return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	private static boolean isEssence(ItemStack item) {

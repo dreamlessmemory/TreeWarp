@@ -53,7 +53,7 @@ public class CommandListener implements CommandExecutor {
 
 	private void cmdBonemeal(CommandSender sender) {
 		if (sender instanceof Player) {
-			((Player) sender).getInventory().addItem(CustomRecipes.essenceItem());
+			((Player) sender).getInventory().addItem(CustomRecipes.magicBonemealItem());
 		}
 	}
 

@@ -31,7 +31,7 @@ public class AnvilListener implements Listener {
 			return;
 
 		ItemStack rightSide = inventory.getItem(1);
-		if (rightSide == null || rightSide.getType() != Material.BONE_MEAL) // Ignore if not bonemeal
+		if (rightSide == null || rightSide.getType() != com.dreamless.laithorn.CustomRecipes.fragmentItem("DULL").getType()) // Ignore if not bonemeal
 			return;
 
 		NBTItem bonemealNBT = new NBTItem(rightSide);

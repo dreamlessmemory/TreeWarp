@@ -77,9 +77,9 @@
 			<version>-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-	    	<groupId>com.github.dreamlessmemory</groupId>
+	    <groupId>com.github.dreamlessmemory</groupId>
 	    	<artifactId>LaithornsGrace</artifactId>
-	    	<version>7c7dd24a92</version>
+	    	<version>2a01e0f2f9</version>
 		</dependency>
 	</dependencies>
 </project>

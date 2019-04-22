@@ -156,6 +156,7 @@ public class TreeWarp extends JavaPlugin {
 		TeleportHandler.DISTANCE = currentConfig.getDouble("distancesquared", 4);
 		RequirementsHandler.registerRecipe(CustomRecipes.SHEARS_CREATE_STRING, currentConfig.getInt("shears_create_level", 1));
 		RequirementsHandler.registerRecipe(CustomRecipes.SHEARS_REPAIR_STRING, currentConfig.getInt("shears_repair_level", 2));
+		RequirementsHandler.registerRecipe(CustomRecipes.BONEMEAL_CREATE_STRING, currentConfig.getInt("bonemeal_create_level", 1));
 		
 		/*** text.yml ***/
 		currentFile = new File(treeWarp.getDataFolder(), "text.yml");

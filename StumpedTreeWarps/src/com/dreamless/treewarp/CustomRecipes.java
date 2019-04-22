@@ -9,6 +9,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice.MaterialChoice;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import de.tr7zw.itemnbtapi.NBTCompound;
@@ -20,13 +21,15 @@ public class CustomRecipes {
 	
 	public static final String SHEARS_REPAIR_STRING = "shears_repair";
 	public static final String SHEARS_CREATE_STRING = "shears_create";
+	public static final String BONEMEAL_CREATE_STRING = "bonemeal_create";
 
 	public static void registerRecipes() {
 		Bukkit.addRecipe(shearsRecipe());
 		Bukkit.addRecipe(spawnLeafRecipe());
+		Bukkit.addRecipe(bonemealRecipe());
 	}
 
-	public static ItemStack essenceItem() {
+	public static ItemStack magicBonemealItem() {
 		ItemStack item = new ItemStack(Material.BONE_MEAL);
 
 		/*** Item Meta ***/
@@ -122,7 +125,7 @@ public class CustomRecipes {
 		ShapedRecipe recipe = new ShapedRecipe(key, shears);
 
 		recipe.shape("EEE", "ESE", "EEE");
-		recipe.setIngredient('E', Material.BONE_MEAL);
+		recipe.setIngredient('E', Material.FLINT);
 		recipe.setIngredient('S', Material.SHEARS);
 
 		return recipe;
@@ -137,7 +140,7 @@ public class CustomRecipes {
 		ShapedRecipe recipe = new ShapedRecipe(key, leaf);
 
 		recipe.shape("EEE", "ELE", "EEE");
-		recipe.setIngredient('E', Material.BONE_MEAL);
+		recipe.setIngredient('E', Material.FLINT);
 		
 		ArrayList<Material> leaves = new ArrayList<Material>();
 		leaves.add(Material.BIRCH_LEAVES);
@@ -152,5 +155,19 @@ public class CustomRecipes {
 
 		return recipe;
 
+	}
+	
+	private static ShapelessRecipe bonemealRecipe() {
+		
+		ItemStack bonemeal = magicBonemealItem();
+
+		NamespacedKey key = new NamespacedKey(TreeWarp.treeWarp, "magicked_bonemeal");
+
+		ShapelessRecipe recipe = new ShapelessRecipe(key, bonemeal);
+
+		recipe.addIngredient(Material.FLINT);
+		recipe.addIngredient(Material.BONE_MEAL);
+
+		return recipe;
 	}
 }
