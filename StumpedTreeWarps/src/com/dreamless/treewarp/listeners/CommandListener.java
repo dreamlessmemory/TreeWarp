@@ -84,6 +84,10 @@ public class CommandListener implements CommandExecutor {
 		if (!(sender instanceof Player)) { // No console commands please
 			return;
 		}
+		
+		if(args.length <= 1) { //Need additional arguments
+			return;
+		}
 
 		Player player = (Player) sender;
 

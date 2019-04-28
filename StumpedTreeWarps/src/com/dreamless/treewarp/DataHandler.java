@@ -32,6 +32,7 @@ public class DataHandler {
 			configuration.load(fileReader);
 		} catch (IOException | InvalidConfigurationException e) {
 			e.printStackTrace();
+			return;
 		}
 		
 		if(configuration.contains("spawn1")) {
