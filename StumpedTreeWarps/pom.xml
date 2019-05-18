@@ -79,7 +79,7 @@
 		<dependency>
 	    <groupId>com.github.dreamlessmemory</groupId>
 	    	<artifactId>LaithornsGrace</artifactId>
-	    	<version>2a01e0f2f9</version>
+	    	<version>94511e2777</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -10,6 +10,7 @@ import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 
+import com.dreamless.laithorn.LaithornsGrace;
 import com.dreamless.laithorn.RequirementsHandler;
 import com.dreamless.treewarp.CustomRecipes;
 
@@ -66,7 +67,7 @@ public class CraftingBenchListener implements Listener {
 			ItemStack itemStack = matrix[i];
 			if (itemStack == null)
 				continue;
-			if (itemStack.getType() == com.dreamless.laithorn.CustomRecipes.fragmentItem("DULL").getType()) {
+			if (itemStack.getType() == LaithornsGrace.getFragmentMaterial()) {
 				NBTItem nbti = new NBTItem(itemStack);
 				NBTCompound laithorn = nbti.getCompound("Laithorn");
 				if (laithorn == null)

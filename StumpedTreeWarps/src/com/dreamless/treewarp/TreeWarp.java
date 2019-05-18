@@ -154,9 +154,9 @@ public class TreeWarp extends JavaPlugin {
 		BlockListener.durabilityLoss = currentConfig.getInt("shearsusecost", 0);
 		AnvilListener.REPAIR_RATE = currentConfig.getInt("shearsrepairrate", 50);
 		TeleportHandler.DISTANCE = currentConfig.getDouble("distancesquared", 4);
-		RequirementsHandler.registerRecipe(CustomRecipes.SHEARS_CREATE_STRING, currentConfig.getInt("shears_create_level", 1));
-		RequirementsHandler.registerRecipe(CustomRecipes.SHEARS_REPAIR_STRING, currentConfig.getInt("shears_repair_level", 2));
-		RequirementsHandler.registerRecipe(CustomRecipes.BONEMEAL_CREATE_STRING, currentConfig.getInt("bonemeal_create_level", 1));
+		RequirementsHandler.registerRecipe(CustomRecipes.SHEARS_CREATE_STRING, currentConfig.getInt("shears_create_level", 0));
+		RequirementsHandler.registerRecipe(CustomRecipes.SHEARS_REPAIR_STRING, currentConfig.getInt("shears_repair_level", 0));
+		RequirementsHandler.registerRecipe(CustomRecipes.BONEMEAL_CREATE_STRING, currentConfig.getInt("bonemeal_create_level", 0));
 		
 		/*** text.yml ***/
 		currentFile = new File(treeWarp.getDataFolder(), "text.yml");

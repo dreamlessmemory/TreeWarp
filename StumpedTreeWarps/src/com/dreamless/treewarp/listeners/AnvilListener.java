@@ -1,5 +1,6 @@
 package com.dreamless.treewarp.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,7 +13,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.dreamless.laithorn.LaithornsGrace;
 import com.dreamless.laithorn.RequirementsHandler;
+import com.dreamless.laithorn.events.PlayerExperienceGainEvent;
+import com.dreamless.laithorn.events.PlayerExperienceVariables.GainType;
 import com.dreamless.treewarp.CustomRecipes;
 import com.dreamless.treewarp.PlayerMessager;
 
@@ -31,7 +35,7 @@ public class AnvilListener implements Listener {
 			return;
 
 		ItemStack rightSide = inventory.getItem(1);
-		if (rightSide == null || rightSide.getType() != com.dreamless.laithorn.CustomRecipes.fragmentItem("DULL").getType()) // Ignore if not bonemeal
+		if (rightSide == null || rightSide.getType() != LaithornsGrace.getFragmentMaterial()) // Ignore if not bonemeal
 			return;
 
 		NBTItem bonemealNBT = new NBTItem(rightSide);
@@ -39,7 +43,9 @@ public class AnvilListener implements Listener {
 		if (!bonemealNBT.hasKey("Laithorn")) // Ignore if not essence
 			return;
 		
-		if(!RequirementsHandler.canDoAction((Player) event.getView().getPlayer(), CustomRecipes.SHEARS_REPAIR_STRING, null));
+		if(!RequirementsHandler.canDoAction((Player) event.getView().getPlayer(), CustomRecipes.SHEARS_REPAIR_STRING, null)) {
+			return;
+		}
 
 		/*** Processing ***/
 
@@ -96,6 +102,10 @@ public class AnvilListener implements Listener {
 		player.updateInventory();
 		//player.getInventory().setItemInMainHand(item);
 		//event.setCurrentItem(item);
+		
+		//Exp Event
+		int expGain = 10;
+		Bukkit.getPluginManager().callEvent(new PlayerExperienceGainEvent(player, expGain, GainType.SMITHING));
 		
 	}
 
