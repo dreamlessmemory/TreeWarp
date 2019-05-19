@@ -151,7 +151,7 @@ public class TreeWarp extends JavaPlugin {
 		EffectHandler.AMBIENT_PARTICLE_COUNT = currentConfig.getInt("ambientparticles", 7);
 		
 		// Balancing
-		BlockListener.durabilityLoss = currentConfig.getInt("shearsusecost", 0);
+		BlockListener.durabilityLoss = currentConfig.getInt("shearsusecost", 1);
 		AnvilListener.REPAIR_RATE = currentConfig.getInt("shearsrepairrate", 50);
 		TeleportHandler.DISTANCE = currentConfig.getDouble("distancesquared", 4);
 		RequirementsHandler.registerRecipe(CustomRecipes.SHEARS_CREATE_STRING, currentConfig.getInt("shears_create_level", 0));

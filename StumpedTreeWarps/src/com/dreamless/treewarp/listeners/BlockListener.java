@@ -3,6 +3,7 @@ package com.dreamless.treewarp.listeners;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -15,9 +16,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerItemDamageEvent;
+import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.dreamless.laithorn.LaithornUtils;
@@ -34,7 +37,7 @@ import de.tr7zw.itemnbtapi.NBTItem;
 
 public class BlockListener implements Listener {
 
-	public static int durabilityLoss = 0;
+	public static int durabilityLoss = 10;
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onTreeGrowth(StructureGrowEvent event) {
@@ -81,7 +84,7 @@ public class BlockListener implements Listener {
 
 		// Messaging
 		PlayerMessager.msg(player, LanguageReader.getText("Tree_Grown"));
-		
+
 		// Sound Effects
 		player.getWorld().playSound(event.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
 	}
@@ -106,8 +109,25 @@ public class BlockListener implements Listener {
 			if (nbti.hasKey("TreeWarp")) {
 				// PlayerMessager.debugLog("Leaf harvesting");
 				harvestingLeaves = true;
+				// Damage...
+				/*
+				 * Damageable itemMeta = (Damageable) item.getItemMeta();
+				 * itemMeta.setDamage(itemMeta.getDamage() - durabilityLoss);
+				 * item.setItemMeta((ItemMeta)itemMeta);
+				 */
+				ItemMeta itemMeta = item.getItemMeta();
 
-				Bukkit.getPluginManager().callEvent(new PlayerItemDamageEvent(player, item, durabilityLoss));
+				int resultantDamge = ((Damageable) itemMeta).getDamage() + durabilityLoss;
+				if (resultantDamge > Material.SHEARS.getMaxDurability()) {
+					item.setAmount(0);
+					player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0f, 1.0f);
+					player.playEffect(EntityEffect.ENTITY_POOF);
+					PlayerMessager.debugLog("Break");
+				} else {
+					((Damageable) itemMeta).setDamage(resultantDamge);
+					item.setItemMeta(itemMeta);
+				}
+
 			} // else PlayerMessager.debugLog("Nope?");
 		} // else PlayerMessager.debugLog("YA Nope?");
 
@@ -130,18 +150,18 @@ public class BlockListener implements Listener {
 
 			event.setCancelled(true);
 			new TreeHandler.LeafRegrow(location, clickedBlock.getType()).runTaskLater(TreeWarp.treeWarp, 20);
-			
+
 			Player ownerPlayer = Bukkit.getPlayer(UUID.fromString(CacheHandler.getTreeOwner(warpLocation)));
-			
+
 			location.getWorld().dropItem(location,
 					TreeHandler.getWarpLeaf(clickedBlock.getType(), ownerPlayer, warpLocation));
 			location.getWorld().getBlockAt(location).setType(Material.AIR);
 
 		} else {
-			
+
 			location.getWorld().playSound(clickedBlock.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, 1, 1);
 			location.getWorld().spawnParticle(Particle.END_ROD, location.clone().add(0.5, 0.5, 0.5), 8, 0.5, 0.5, 0.5);
-			
+
 			if (TreeHandler.isPotentialLeaf(clickedBlock.getType())) {// Remove just the leaf
 				CacheHandler.removeLeafFromCache(location);
 				DatabaseHandler.removeLeafBlock(location);
@@ -193,14 +213,15 @@ public class BlockListener implements Listener {
 			}
 		} else {
 			destination = CacheHandler.getWarpLocation(treeWarp.getString("playerUUID"));
-			
-			if(destination == null) {
+
+			if (destination == null) {
 				PlayerMessager.msg(player, LanguageReader.getText("Teleport_No_Tree"));
 				return;
 			}
-			
-			//= new Location(Bukkit.getWorld(treeWarp.getString("world")), treeWarp.getDouble("x"),
-			//		treeWarp.getDouble("y"), treeWarp.getDouble("z"));
+
+			// = new Location(Bukkit.getWorld(treeWarp.getString("world")),
+			// treeWarp.getDouble("x"),
+			// treeWarp.getDouble("y"), treeWarp.getDouble("z"));
 		}
 		// Remove leaf item
 		item.setPickupDelay(1000);
@@ -213,13 +234,14 @@ public class BlockListener implements Listener {
 		}.runTaskLater(TreeWarp.treeWarp, 20);
 
 		// Inform player
-		PlayerMessager.msg(player, LanguageReader.getText(spawn? "Teleport_Prepare_Spawn" : "Teleport_Prepare", treeWarp.getString("player")));
-		
+		PlayerMessager.msg(player, LanguageReader.getText(spawn ? "Teleport_Prepare_Spawn" : "Teleport_Prepare",
+				treeWarp.getString("player")));
+
 		player.getWorld().playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRAVEL, 0.5f, 1.25f);
-		
-		//Delayed handlers
+
+		// Delayed handlers
 		new EffectHandler.EffectRunnable(player.getLocation(), 60, 1, "ready").runTaskTimer(TreeWarp.treeWarp, 0, 1);
-		new TeleportHandler(event.getPlayer(), destination, player.getLocation(), treeWarp.hasKey("spawn"), treeWarp.getString("player"))
-				.runTaskLater(TreeWarp.treeWarp, 60);
+		new TeleportHandler(event.getPlayer(), destination, player.getLocation(), treeWarp.hasKey("spawn"),
+				treeWarp.getString("player")).runTaskLater(TreeWarp.treeWarp, 60);
 	}
 }
