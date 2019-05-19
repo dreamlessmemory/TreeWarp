@@ -1,6 +1,8 @@
 package com.dreamless.treewarp.listeners;
 
-import org.bukkit.Bukkit;
+import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,10 +15,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.dreamless.laithorn.LaithornsGrace;
-import com.dreamless.laithorn.RequirementsHandler;
-import com.dreamless.laithorn.events.PlayerExperienceGainEvent;
-import com.dreamless.laithorn.events.PlayerExperienceVariables.GainType;
+import com.dreamless.laithorn.api.ItemCrafting;
+import com.dreamless.laithorn.api.ItemRepair;
+import com.dreamless.laithorn.api.RequirementsHandler;
 import com.dreamless.treewarp.CustomRecipes;
 import com.dreamless.treewarp.PlayerMessager;
 
@@ -35,7 +36,7 @@ public class AnvilListener implements Listener {
 			return;
 
 		ItemStack rightSide = inventory.getItem(1);
-		if (rightSide == null || rightSide.getType() != LaithornsGrace.getFragmentMaterial()) // Ignore if not bonemeal
+		if (rightSide == null || rightSide.getType() != ItemCrafting.getFragmentMaterial()) // Ignore if not bonemeal
 			return;
 
 		NBTItem bonemealNBT = new NBTItem(rightSide);
@@ -100,12 +101,10 @@ public class AnvilListener implements Listener {
 		Player player = (Player)event.getWhoClicked();
 		player.getInventory().addItem(item);
 		player.updateInventory();
-		//player.getInventory().setItemInMainHand(item);
-		//event.setCurrentItem(item);
 		
 		//Exp Event
-		int expGain = 10;
-		Bukkit.getPluginManager().callEvent(new PlayerExperienceGainEvent(player, expGain, GainType.SMITHING));
+		//int expGain = 10;
+		//Bukkit.getPluginManager().callEvent(new PlayerExperienceGainEvent(player, expGain, GainType.SMITHING, true));
 		
 	}
 
@@ -114,7 +113,8 @@ public class AnvilListener implements Listener {
 		ItemStack repairedShears = shears.clone();
 		Damageable damageable = (Damageable) shears.getItemMeta();
 
-		int repairValue = essence.getAmount() * REPAIR_RATE;
+		List<String> hardCodedTags = Arrays.asList("FERROUS", "ARBOREAL", "FLORAL");
+		int repairValue = ItemRepair.getRepairValue(repairedShears, REPAIR_RATE, hardCodedTags);
 		PlayerMessager.debugLog("Repairing by " + repairValue);
 		damageable.setDamage(Math.max(damageable.getDamage() - repairValue, 0)); // 238 is the max durability of shears
 

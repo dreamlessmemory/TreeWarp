@@ -14,7 +14,7 @@ import com.dreamless.treewarp.listeners.CommandListener;
 import com.dreamless.treewarp.listeners.CraftingBenchListener;
 import com.mysql.jdbc.Connection;
 
-import com.dreamless.laithorn.RequirementsHandler;
+import com.dreamless.laithorn.api.RequirementsHandler;
 
 public class TreeWarp extends JavaPlugin {
 
@@ -157,6 +157,10 @@ public class TreeWarp extends JavaPlugin {
 		RequirementsHandler.registerRecipe(CustomRecipes.SHEARS_CREATE_STRING, currentConfig.getInt("shears_create_level", 0));
 		RequirementsHandler.registerRecipe(CustomRecipes.SHEARS_REPAIR_STRING, currentConfig.getInt("shears_repair_level", 0));
 		RequirementsHandler.registerRecipe(CustomRecipes.BONEMEAL_CREATE_STRING, currentConfig.getInt("bonemeal_create_level", 0));
+		
+		//Repairs
+		
+		
 		
 		/*** text.yml ***/
 		currentFile = new File(treeWarp.getDataFolder(), "text.yml");

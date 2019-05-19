@@ -1,6 +1,7 @@
 package com.dreamless.treewarp;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -12,6 +13,8 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.dreamless.laithorn.LaithornUtils;
+
 import de.tr7zw.itemnbtapi.NBTCompound;
 import de.tr7zw.itemnbtapi.NBTItem;
 
@@ -22,6 +25,7 @@ public class CustomRecipes {
 	public static final String SHEARS_REPAIR_STRING = "shears_repair";
 	public static final String SHEARS_CREATE_STRING = "shears_create";
 	public static final String BONEMEAL_CREATE_STRING = "bonemeal_create";
+	public static List<String> SHEARS_REPAIR_TAGS; 
 
 	public static void registerRecipes() {
 		Bukkit.addRecipe(shearsRecipe());
@@ -39,7 +43,7 @@ public class CustomRecipes {
 		itemMeta.setDisplayName(LanguageReader.getText("Growth_Item_Name"));
 
 		// Set flavor text
-		itemMeta.setLore(TreeWarpUtils.wrapText(LanguageReader.getText("Growth_Item_Text")));
+		itemMeta.setLore(LaithornUtils.wrapText(LanguageReader.getText("Growth_Item_Text")));
 
 		// Set cosmetic enchantment
 		itemMeta.addEnchant(Enchantment.MENDING, 1, true);
@@ -69,7 +73,7 @@ public class CustomRecipes {
 		itemMeta.setDisplayName(LanguageReader.getText("Shears_Item_Name"));
 
 		// Set flavor text
-		itemMeta.setLore(TreeWarpUtils.wrapText(LanguageReader.getText("Shears_Item_Text")));
+		itemMeta.setLore(LaithornUtils.wrapText(LanguageReader.getText("Shears_Item_Text")));
 
 		// Set cosmetic enchantment
 		itemMeta.addEnchant(Enchantment.DURABILITY, 1, true);
@@ -97,7 +101,7 @@ public class CustomRecipes {
 		itemMeta.setDisplayName(LanguageReader.getText("Spawn_Leaf_Item_Name"));
 
 		// Set flavor text
-		itemMeta.setLore(TreeWarpUtils.wrapText(LanguageReader.getText("Spawn_Leaf_Item_Text")));
+		itemMeta.setLore(LaithornUtils.wrapText(LanguageReader.getText("Spawn_Leaf_Item_Text")));
 
 		// Set cosmetic enchantment
 		itemMeta.addEnchant(Enchantment.DURABILITY, 1, true);

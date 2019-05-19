@@ -10,6 +10,8 @@ import org.bukkit.Location;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
+import com.dreamless.laithorn.LaithornUtils;
+
 public class DatabaseHandler {
 
 	public static HashMap<Location, Location> getLeafToRootCache() {
@@ -20,8 +22,8 @@ public class DatabaseHandler {
 		try (PreparedStatement stmt = TreeWarp.connection.prepareStatement(query)) {
 			ResultSet result = stmt.executeQuery();
 			while (result.next()) {
-				leafToRoot.put(TreeWarpUtils.deserializeLocation(result.getString("location")),
-						TreeWarpUtils.deserializeLocation(result.getString("center")));
+				leafToRoot.put(LaithornUtils.deserializeLocation(result.getString("location")),
+						LaithornUtils.deserializeLocation(result.getString("center")));
 			}
 
 		} catch (SQLException e) {
@@ -40,7 +42,7 @@ public class DatabaseHandler {
 			ResultSet result = stmt.executeQuery();
 			while (result.next()) {
 				playerToRoot.put(result.getString("player"),
-						TreeWarpUtils.deserializeLocation(result.getString("center")));
+						LaithornUtils.deserializeLocation(result.getString("center")));
 			}
 
 		} catch (SQLException e) {
@@ -59,7 +61,7 @@ public class DatabaseHandler {
 	public static void removeLeafBlock(Location location) {
 		String query = "DELETE FROM " + TreeWarp.getDatabase() + "trees WHERE location=?";
 		try (PreparedStatement stmt = TreeWarp.connection.prepareStatement(query)) {
-			stmt.setString(1, TreeWarpUtils.serializeLocation(location));
+			stmt.setString(1, LaithornUtils.serializeLocation(location));
 			stmt.executeUpdate();
 
 		} catch (SQLException e) {
@@ -100,8 +102,8 @@ public class DatabaseHandler {
 		try (PreparedStatement preparedStatement = TreeWarp.connection.prepareStatement(query)) {
 
 			preparedStatement.setString(1, player.getUniqueId().toString());
-			preparedStatement.setString(2, TreeWarpUtils.serializeLocation(location));
-			preparedStatement.setString(3, TreeWarpUtils.serializeLocation(location));
+			preparedStatement.setString(2, LaithornUtils.serializeLocation(location));
+			preparedStatement.setString(3, LaithornUtils.serializeLocation(location));
 			preparedStatement.executeUpdate();
 
 			PlayerMessager.debugLog(preparedStatement.toString());
@@ -120,9 +122,9 @@ public class DatabaseHandler {
 			TreeWarp.connection.setAutoCommit(false);
 
 			for (BlockState blockState : list) {
-				preparedStatement.setString(1, TreeWarpUtils.serializeLocation(blockState.getLocation()));
-				preparedStatement.setString(2, TreeWarpUtils.serializeLocation(location));
-				preparedStatement.setString(3, TreeWarpUtils.serializeLocation(location));
+				preparedStatement.setString(1, LaithornUtils.serializeLocation(blockState.getLocation()));
+				preparedStatement.setString(2, LaithornUtils.serializeLocation(location));
+				preparedStatement.setString(3, LaithornUtils.serializeLocation(location));
 				preparedStatement.addBatch();
 			}
 

@@ -10,6 +10,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.dreamless.laithorn.LaithornUtils;
+
 import de.tr7zw.itemnbtapi.NBTCompound;
 import de.tr7zw.itemnbtapi.NBTItem;
 
@@ -105,7 +107,7 @@ public class TreeHandler {
 		itemMeta.setDisplayName(LanguageReader.getText("Leaf_Item_Name", player.getName()));
 		
 		// Set flavor text
-		itemMeta.setLore(TreeWarpUtils.wrapText(LanguageReader.getText("Leaf_Item_Text", player.getName())));
+		itemMeta.setLore(LaithornUtils.wrapText(LanguageReader.getText("Leaf_Item_Text", player.getName())));
 		
 		// Set cosmetic enchantment
 		itemMeta.addEnchant(Enchantment.DURABILITY, 1, true);

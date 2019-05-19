@@ -15,11 +15,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import com.dreamless.laithorn.LaithornUtils;
 import com.dreamless.treewarp.CacheHandler;
 import com.dreamless.treewarp.DatabaseHandler;
 import com.dreamless.treewarp.EffectHandler;
@@ -28,8 +29,6 @@ import com.dreamless.treewarp.PlayerMessager;
 import com.dreamless.treewarp.TeleportHandler;
 import com.dreamless.treewarp.TreeHandler;
 import com.dreamless.treewarp.TreeWarp;
-import com.dreamless.treewarp.TreeWarpUtils;
-
 import de.tr7zw.itemnbtapi.NBTCompound;
 import de.tr7zw.itemnbtapi.NBTItem;
 
@@ -108,11 +107,7 @@ public class BlockListener implements Listener {
 				// PlayerMessager.debugLog("Leaf harvesting");
 				harvestingLeaves = true;
 
-				// Handle degradation
-
-				Damageable itemMeta = (Damageable) item.getItemMeta();
-				itemMeta.setDamage(itemMeta.getDamage() + durabilityLoss);
-				item.setItemMeta((ItemMeta) itemMeta);
+				Bukkit.getPluginManager().callEvent(new PlayerItemDamageEvent(player, item, durabilityLoss));
 			} // else PlayerMessager.debugLog("Nope?");
 		} // else PlayerMessager.debugLog("YA Nope?");
 
@@ -153,7 +148,7 @@ public class BlockListener implements Listener {
 				PlayerMessager.msg(player, LanguageReader.getText("Tree_Lost_Leaf"));
 			} else {
 				CacheHandler.removeTreeFromCache(warpLocation);
-				DatabaseHandler.removeTree(TreeWarpUtils.serializeLocation(warpLocation));
+				DatabaseHandler.removeTree(LaithornUtils.serializeLocation(warpLocation));
 				PlayerMessager.msg(player, LanguageReader.getText("Tree_Lost_Tree"));
 			}
 		}

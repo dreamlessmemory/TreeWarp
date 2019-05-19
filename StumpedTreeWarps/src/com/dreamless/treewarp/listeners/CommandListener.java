@@ -1,7 +1,5 @@
 package com.dreamless.treewarp.listeners;
 
-import java.text.ParseException;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -9,6 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.dreamless.laithorn.LaithornUtils;
 import com.dreamless.treewarp.CacheHandler;
 import com.dreamless.treewarp.CustomRecipes;
 import com.dreamless.treewarp.DatabaseHandler;
@@ -16,7 +15,6 @@ import com.dreamless.treewarp.LanguageReader;
 import com.dreamless.treewarp.PlayerMessager;
 import com.dreamless.treewarp.TeleportHandler;
 import com.dreamless.treewarp.TreeWarp;
-import com.dreamless.treewarp.TreeWarpUtils;
 
 public class CommandListener implements CommandExecutor {
 
@@ -65,17 +63,17 @@ public class CommandListener implements CommandExecutor {
 
 	private void cmdClearPlayer(CommandSender sender, String[] args) {
 		try {
-			Player player = Bukkit.getPlayer(TreeWarpUtils.getUUID(args[1]));
+			Player player = Bukkit.getPlayer(LaithornUtils.getUUID(args[1]));
 			
 			if(player != null) {
 			
 			Location centerLocation = CacheHandler.removePlayerFromCache(player);
-			DatabaseHandler.removeTree(TreeWarpUtils.serializeLocation(centerLocation));
+			DatabaseHandler.removeTree(LaithornUtils.serializeLocation(centerLocation));
 			PlayerMessager.msg(sender, LanguageReader.getText("CMD_Player_Cleared", args[1]));
 			} else {
 				PlayerMessager.msg(sender, LanguageReader.getText("CMD_Player_Not_Cleared", args[1]));
 			}
-		} catch (ParseException | org.json.simple.parser.ParseException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
