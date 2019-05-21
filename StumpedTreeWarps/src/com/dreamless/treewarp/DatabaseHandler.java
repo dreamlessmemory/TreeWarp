@@ -22,8 +22,10 @@ public class DatabaseHandler {
 		try (PreparedStatement stmt = TreeWarp.connection.prepareStatement(query)) {
 			ResultSet result = stmt.executeQuery();
 			while (result.next()) {
-				leafToRoot.put(LaithornUtils.deserializeLocation(result.getString("location")),
-						LaithornUtils.deserializeLocation(result.getString("center")));
+				Location rootLocation = LaithornUtils.deserializeLocation(result.getString("center"));
+				Location leafLocation = LaithornUtils.deserializeLocation(result.getString("location"));
+				leafToRoot.put(leafLocation, rootLocation);
+				PlayerMessager.debugLog("Root: " + rootLocation + " Leaf: " + leafLocation);
 			}
 
 		} catch (SQLException e) {
@@ -41,8 +43,10 @@ public class DatabaseHandler {
 		try (PreparedStatement stmt = TreeWarp.connection.prepareStatement(query)) {
 			ResultSet result = stmt.executeQuery();
 			while (result.next()) {
-				playerToRoot.put(result.getString("player"),
-						LaithornUtils.deserializeLocation(result.getString("center")));
+				String player = result.getString("player");
+				Location rootLocation = LaithornUtils.deserializeLocation(result.getString("center"));
+				playerToRoot.put(player, rootLocation);
+				PlayerMessager.debugLog("Player: " + player + " Leaf: " + rootLocation);
 			}
 
 		} catch (SQLException e) {
@@ -87,6 +91,8 @@ public class DatabaseHandler {
 			try (PreparedStatement preparedStatement = TreeWarp.connection.prepareStatement(query)) {
 
 				preparedStatement.setString(1, center);
+				
+				PlayerMessager.debugLog(preparedStatement.toString());
 				preparedStatement.executeUpdate();
 
 			} catch (SQLException e) {
@@ -118,6 +124,7 @@ public class DatabaseHandler {
 				+ "trees (location, center) VALUES (?, ?) ON DUPLICATE KEY UPDATE center=?";
 
 		try (PreparedStatement preparedStatement = TreeWarp.connection.prepareStatement(insert)) {
+			
 
 			TreeWarp.connection.setAutoCommit(false);
 
@@ -125,6 +132,7 @@ public class DatabaseHandler {
 				preparedStatement.setString(1, LaithornUtils.serializeLocation(blockState.getLocation()));
 				preparedStatement.setString(2, LaithornUtils.serializeLocation(location));
 				preparedStatement.setString(3, LaithornUtils.serializeLocation(location));
+				PlayerMessager.debugLog(preparedStatement.toString());
 				preparedStatement.addBatch();
 			}
 
@@ -139,12 +147,16 @@ public class DatabaseHandler {
 	}
 
 	private static void removeOldTreeByPlayer(Player player) {
-		String query = "SELECT center FROM  " + TreeWarp.getDatabase() + "players";
+		String query = "SELECT center FROM  " + TreeWarp.getDatabase() + "players WHERE player=?";
 
 		String center = null;
 
 		try (PreparedStatement preparedStatement = TreeWarp.connection.prepareStatement(query)) {
-
+			
+			preparedStatement.setString(1, player.getUniqueId().toString());
+			
+			PlayerMessager.debugLog(preparedStatement.toString());
+			
 			ResultSet result = preparedStatement.executeQuery();
 			if (result.next()) {
 				center = result.getString("center");
