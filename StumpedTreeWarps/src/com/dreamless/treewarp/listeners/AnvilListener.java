@@ -3,6 +3,7 @@ package com.dreamless.treewarp.listeners;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,6 +19,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.dreamless.laithorn.api.ItemCrafting;
 import com.dreamless.laithorn.api.ItemRepair;
 import com.dreamless.laithorn.api.RequirementsHandler;
+import com.dreamless.laithorn.events.PlayerExperienceGainEvent;
+import com.dreamless.laithorn.events.PlayerExperienceVariables.GainType;
 import com.dreamless.treewarp.CustomRecipes;
 import com.dreamless.treewarp.PlayerMessager;
 
@@ -26,6 +29,7 @@ import de.tr7zw.itemnbtapi.NBTItem;
 public class AnvilListener implements Listener {
 
 	public static int REPAIR_RATE = 50;
+	public static int REPAIR_EXP_GAIN = 3;
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onAnvilPrepare(PrepareAnvilEvent event) {
@@ -80,9 +84,9 @@ public class AnvilListener implements Listener {
 		}
 		
 		AnvilInventory inventory = (AnvilInventory)event.getInventory();
-		ItemStack item = inventory.getItem(2);
+		ItemStack rightSide = inventory.getItem(2);
 		
-		if(item == null || !item.isSimilar(CustomRecipes.shearsItem())) { //Ignore if not magick shears
+		if(rightSide == null || !rightSide.isSimilar(CustomRecipes.shearsItem())) { //Ignore if not magick shears
 			PlayerMessager.debugLog("Not shears");
 			return;
 		}
@@ -99,12 +103,12 @@ public class AnvilListener implements Listener {
 		//Give item to cursor
 		
 		Player player = (Player)event.getWhoClicked();
-		player.getInventory().addItem(item);
+		player.getInventory().addItem(rightSide);
 		player.updateInventory();
 		
 		//Exp Event
-		//int expGain = 10;
-		//Bukkit.getPluginManager().callEvent(new PlayerExperienceGainEvent(player, expGain, GainType.SMITHING, true));
+		int expGain = calculateExpGain(inventory.getItem(0), rightSide);
+		Bukkit.getPluginManager().callEvent(new PlayerExperienceGainEvent(player, expGain, GainType.SMITHING, true));
 		
 	}
 
@@ -121,6 +125,13 @@ public class AnvilListener implements Listener {
 		repairedShears.setItemMeta((ItemMeta) damageable);
 
 		return repairedShears;
+	}
+	
+	private int calculateExpGain(ItemStack before, ItemStack after) {
+		Damageable previousDamage = (Damageable) before.getItemMeta();
+		Damageable finalDamage = (Damageable) after.getItemMeta();
+		
+		return (previousDamage.getDamage() - finalDamage.getDamage()) * REPAIR_EXP_GAIN;
 	}
 	
 }

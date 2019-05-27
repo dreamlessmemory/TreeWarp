@@ -158,8 +158,10 @@ public class TreeWarp extends JavaPlugin {
 		RequirementsHandler.registerRecipe(CustomRecipes.SHEARS_REPAIR_STRING, currentConfig.getInt("shears_repair_level", 0));
 		RequirementsHandler.registerRecipe(CustomRecipes.BONEMEAL_CREATE_STRING, currentConfig.getInt("bonemeal_create_level", 0));
 		
-		//Repairs
 		
+		//Repairs
+		AnvilListener.REPAIR_RATE = currentConfig.getInt("shearsrepairrate", 50);
+		AnvilListener.REPAIR_EXP_GAIN = currentConfig.getInt("shearsrepairexp", 3);
 		
 		
 		/*** text.yml ***/
