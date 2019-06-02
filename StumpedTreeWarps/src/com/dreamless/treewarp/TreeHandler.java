@@ -11,6 +11,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.dreamless.laithorn.LaithornUtils;
+import com.dreamless.laithorn.api.ItemCrafting;
 
 import de.tr7zw.itemnbtapi.NBTCompound;
 import de.tr7zw.itemnbtapi.NBTItem;
@@ -117,6 +118,9 @@ public class TreeHandler {
 		
 		/*** NBT ***/
 		NBTItem nbti = new NBTItem(leaf);
+
+		NBTCompound laithorn = nbti.addCompound(ItemCrafting.getTopLevelTag());
+		laithorn.setString("module", "TreeWarp");
 		
 		NBTCompound treeWarp = nbti.addCompound("TreeWarp");
 		

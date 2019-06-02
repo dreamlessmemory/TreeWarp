@@ -14,6 +14,7 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.dreamless.laithorn.LaithornUtils;
+import com.dreamless.laithorn.api.ItemCrafting;
 
 import de.tr7zw.itemnbtapi.NBTCompound;
 import de.tr7zw.itemnbtapi.NBTItem;
@@ -54,9 +55,8 @@ public class CustomRecipes {
 		/*** NBT ***/
 		NBTItem nbti = new NBTItem(item);
 
-		nbti.addCompound("Laithorn");
-		// NBTCompound laithorn = nbti.addCompound("Laithorn");
-		// laithorn.setString("laithorn", "laithorn");
+		NBTCompound laithorn = nbti.addCompound(ItemCrafting.getTopLevelTag());
+		laithorn.setString("module", "TreeWarp");
 
 		item = nbti.getItem();
 
@@ -84,6 +84,8 @@ public class CustomRecipes {
 		/*** NBT ***/
 		NBTItem nbti = new NBTItem(item);
 
+		NBTCompound laithorn = nbti.addCompound(ItemCrafting.getTopLevelTag());
+		laithorn.setString("module", "TreeWarp");
 		nbti.addCompound("TreeWarp");
 
 		item = nbti.getItem();
@@ -112,9 +114,11 @@ public class CustomRecipes {
 		/*** NBT ***/
 		NBTItem nbti = new NBTItem(item);
 
-		NBTCompound treeWarpCompound = nbti.addCompound("TreeWarp");
-
-		treeWarpCompound.setString("spawn", "spawn");
+		NBTCompound laithorn = nbti.addCompound(ItemCrafting.getTopLevelTag());
+		laithorn.setString("module", "TreeWarp");
+		
+		NBTCompound treeWarp = nbti.addCompound(ItemCrafting.getTopLevelTag());
+		treeWarp.setString("spawn", "spawn");
 
 		item = nbti.getItem();
 

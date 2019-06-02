@@ -152,7 +152,6 @@ public class TreeWarp extends JavaPlugin {
 		
 		// Balancing
 		BlockListener.durabilityLoss = currentConfig.getInt("shearsusecost", 1);
-		AnvilListener.REPAIR_RATE = currentConfig.getInt("shearsrepairrate", 50);
 		TeleportHandler.DISTANCE = currentConfig.getDouble("distancesquared", 4);
 		RequirementsHandler.registerRecipe(CustomRecipes.SHEARS_CREATE_STRING, currentConfig.getInt("shears_create_level", 0));
 		RequirementsHandler.registerRecipe(CustomRecipes.SHEARS_REPAIR_STRING, currentConfig.getInt("shears_repair_level", 0));
@@ -160,8 +159,8 @@ public class TreeWarp extends JavaPlugin {
 		
 		
 		//Repairs
-		AnvilListener.REPAIR_RATE = currentConfig.getInt("shearsrepairrate", 50);
-		AnvilListener.REPAIR_EXP_GAIN = currentConfig.getInt("shearsrepairexp", 3);
+		AnvilListener.setRepairRate(currentConfig.getInt("shearsrepairrate", 50));
+		AnvilListener.setRepairExpGain(currentConfig.getInt("shearsrepairexp", 3));
 		
 		
 		/*** text.yml ***/

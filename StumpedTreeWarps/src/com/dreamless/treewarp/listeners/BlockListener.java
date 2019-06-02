@@ -23,6 +23,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.dreamless.laithorn.LaithornUtils;
+import com.dreamless.laithorn.api.ItemCrafting;
 import com.dreamless.treewarp.CacheHandler;
 import com.dreamless.treewarp.DatabaseHandler;
 import com.dreamless.treewarp.EffectHandler;
@@ -108,12 +109,6 @@ public class BlockListener implements Listener {
 			if (nbti.hasKey("TreeWarp")) {
 				// PlayerMessager.debugLog("Leaf harvesting");
 				harvestingLeaves = true;
-				// Damage...
-				/*
-				 * Damageable itemMeta = (Damageable) item.getItemMeta();
-				 * itemMeta.setDamage(itemMeta.getDamage() - durabilityLoss);
-				 * item.setItemMeta((ItemMeta)itemMeta);
-				 */
 				ItemMeta itemMeta = item.getItemMeta();
 
 				int resultantDamge = ((Damageable) itemMeta).getDamage() + durabilityLoss;
@@ -184,7 +179,7 @@ public class BlockListener implements Listener {
 		}
 
 		NBTItem nbti = new NBTItem(itemStack);
-		if (!nbti.hasKey("TreeWarp")) {
+		if (!nbti.hasKey(ItemCrafting.getTopLevelTag())) {
 			// PlayerMessager.debugLog("Not warp leaf");
 			return;
 		} // else PlayerMessager.debugLog("Nope?");
@@ -217,10 +212,6 @@ public class BlockListener implements Listener {
 				PlayerMessager.msg(player, LanguageReader.getText("Teleport_No_Tree"));
 				return;
 			}
-
-			// = new Location(Bukkit.getWorld(treeWarp.getString("world")),
-			// treeWarp.getDouble("x"),
-			// treeWarp.getDouble("y"), treeWarp.getDouble("z"));
 		}
 		// Remove leaf item
 		item.setPickupDelay(1000);
