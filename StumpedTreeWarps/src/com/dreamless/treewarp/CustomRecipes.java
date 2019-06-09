@@ -117,7 +117,7 @@ public class CustomRecipes {
 		NBTCompound laithorn = nbti.addCompound(ItemCrafting.getTopLevelTag());
 		laithorn.setString("module", "TreeWarp");
 		
-		NBTCompound treeWarp = nbti.addCompound(ItemCrafting.getTopLevelTag());
+		NBTCompound treeWarp = nbti.addCompound("TreeWarp");
 		treeWarp.setString("spawn", "spawn");
 
 		item = nbti.getItem();

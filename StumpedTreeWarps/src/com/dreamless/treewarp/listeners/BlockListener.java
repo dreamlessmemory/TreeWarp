@@ -179,7 +179,7 @@ public class BlockListener implements Listener {
 		}
 
 		NBTItem nbti = new NBTItem(itemStack);
-		if (!nbti.hasKey(ItemCrafting.getTopLevelTag())) {
+		if (!nbti.hasKey(ItemCrafting.getTopLevelTag()) || !nbti.hasKey("TreeWarp")) {
 			// PlayerMessager.debugLog("Not warp leaf");
 			return;
 		} // else PlayerMessager.debugLog("Nope?");

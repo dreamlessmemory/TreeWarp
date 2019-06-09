@@ -3,12 +3,13 @@ package com.dreamless.treewarp;
 import java.io.File;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.dreamless.treewarp.listeners.AnvilListener;
 import com.dreamless.treewarp.listeners.BlockListener;
 import com.dreamless.treewarp.listeners.CommandListener;
 import com.dreamless.treewarp.listeners.CraftingBenchListener;
@@ -32,14 +33,13 @@ public class TreeWarp extends JavaPlugin {
 
 	// Listeners
 	public BlockListener blockListener;
-	public AnvilListener anvilListener;
 	public CraftingBenchListener craftListener;
 
 	// debug
 	public static boolean debug;
 	public static boolean development;
-	
-	//Language
+
+	// Language
 	public LanguageReader languageReader;
 
 	@Override
@@ -58,7 +58,7 @@ public class TreeWarp extends JavaPlugin {
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
-		
+
 		// Load data
 		DataHandler.loadSpawnArea();
 
@@ -75,23 +75,21 @@ public class TreeWarp extends JavaPlugin {
 		} catch (SQLException e) { // catching errors)
 			e.printStackTrace(); // prints out SQLException errors to the console (if any)
 		}
-		
+
 		// Load Cache
 		CacheHandler.loadCaches();
 
 		// Listeners
 		blockListener = new BlockListener();
-		anvilListener = new AnvilListener();
 		craftListener = new CraftingBenchListener();
 		getCommand("TreeWarp").setExecutor(new CommandListener());
 
 		treeWarp.getServer().getPluginManager().registerEvents(blockListener, treeWarp);
-		treeWarp.getServer().getPluginManager().registerEvents(anvilListener, treeWarp);
 		treeWarp.getServer().getPluginManager().registerEvents(craftListener, treeWarp);
-		
+
 		// Custom Recipes
 		CustomRecipes.registerRecipes();
-			
+
 		PlayerMessager.log(this.getDescription().getName() + " enabled!");
 	}
 
@@ -123,7 +121,7 @@ public class TreeWarp extends JavaPlugin {
 	}
 
 	private boolean readConfig() {
-		
+
 		/*** config.yml ***/
 		File currentFile = new File(treeWarp.getDataFolder(), "config.yml");
 		if (!currentFile.exists()) {
@@ -141,7 +139,7 @@ public class TreeWarp extends JavaPlugin {
 		// Dev/Debug control
 		debug = currentConfig.getBoolean("debug", false);
 		development = currentConfig.getBoolean("development", false);
-		
+
 		// Effects
 		EffectHandler.ANGLE = currentConfig.getInt("angle", 25);
 		EffectHandler.PARTICLE_COUNT = currentConfig.getInt("particles", 7);
@@ -149,35 +147,36 @@ public class TreeWarp extends JavaPlugin {
 		EffectHandler.AMBIENT_EFFECT_COUNT = currentConfig.getInt("ambientcount", 5);
 		EffectHandler.AMBIENT_EFFECT_INTERVAL = currentConfig.getInt("ambientinterval", 3);
 		EffectHandler.AMBIENT_PARTICLE_COUNT = currentConfig.getInt("ambientparticles", 7);
-		
+
 		// Balancing
 		BlockListener.durabilityLoss = currentConfig.getInt("shearsusecost", 1);
 		TeleportHandler.DISTANCE = currentConfig.getDouble("distancesquared", 4);
-		RequirementsHandler.registerRecipe(CustomRecipes.SHEARS_CREATE_STRING, currentConfig.getInt("shears_create_level", 0));
-		RequirementsHandler.registerRecipe(CustomRecipes.SHEARS_REPAIR_STRING, currentConfig.getInt("shears_repair_level", 0));
-		RequirementsHandler.registerRecipe(CustomRecipes.BONEMEAL_CREATE_STRING, currentConfig.getInt("bonemeal_create_level", 0));
-		
-		
-		//Repairs
-		AnvilListener.setRepairRate(currentConfig.getInt("shearsrepairrate", 50));
-		AnvilListener.setRepairExpGain(currentConfig.getInt("shearsrepairexp", 3));
-		
-		
+		RequirementsHandler.registerRecipe(CustomRecipes.SHEARS_CREATE_STRING,
+				currentConfig.getInt("shears_create_level", 0));
+		RequirementsHandler.registerRecipe(CustomRecipes.BONEMEAL_CREATE_STRING,
+				currentConfig.getInt("bonemeal_create_level", 0));
+
+		RequirementsHandler.registerItemRepair(Material.SHEARS, currentConfig.getInt("shears_repair_level", 0),
+				currentConfig.getInt("shears_repair_exp", 3), currentConfig.getInt("shears_repair_rate", 50), true,
+				null);
+
+
 		/*** text.yml ***/
 		currentFile = new File(treeWarp.getDataFolder(), "text.yml");
 		if (!currentFile.exists()) {
 			return false;
 		}
-		
+
 		LanguageReader.loadEntries(currentFile);
-		
+
 		// Continuous
-		new EffectHandler.EffectContinuousRunnable().runTaskTimer(treeWarp, 20, EffectHandler.AMBIENT_EFFECT_INTERVAL * 20);
+		new EffectHandler.EffectContinuousRunnable().runTaskTimer(treeWarp, 20,
+				EffectHandler.AMBIENT_EFFECT_INTERVAL * 20);
 
 		return true;
 	}
-	
-	public  void reload() {	
+
+	public void reload() {
 		try {
 			if (!treeWarp.readConfig()) {
 				treeWarp = null;
@@ -193,7 +192,7 @@ public class TreeWarp extends JavaPlugin {
 	}
 
 	public static String getDatabase() {
-			return development ? testdatabase : database;
+		return development ? testdatabase : database;
 
 	}
 
