@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>StumpedTreeWarps</groupId>
 	<artifactId>StumpedTreeWarps</artifactId>
-	<version>1.0.0-RELEASE</version>
+	<version>1.1.0-RELEASE</version>
 	<name>StumpedTreeWarps</name>
 	<description>A player warp system utilizing trees</description>
 	<build>
@@ -16,6 +16,13 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<outputDirectory>C:/Users/Mirai/Documents/MC Plugins</outputDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -30,7 +37,7 @@
 			<url>http://repo.mvdw-software.be/content/groups/public/<!--https://hub.spigotmc.org/nexus/content/groups/public/--></url>
 		</repository>
 		<repository>
-			<id>spigot-repo</id>
+			<id>spigot-repo-snapshots</id>
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 		</repository>
 		<repository>

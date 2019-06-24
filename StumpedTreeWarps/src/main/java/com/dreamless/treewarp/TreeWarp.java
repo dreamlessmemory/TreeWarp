@@ -149,8 +149,6 @@ public class TreeWarp extends JavaPlugin {
 		// Balancing
 		BlockListener.durabilityLoss = currentConfig.getInt("shearsusecost", 1);
 		TeleportHandler.DISTANCE = currentConfig.getDouble("distancesquared", 4);
-		
-		registerRecipes(currentConfig);
 
 		/*** text.yml ***/
 		currentFile = new File(treeWarp.getDataFolder(), "text.yml");
@@ -159,6 +157,8 @@ public class TreeWarp extends JavaPlugin {
 		}
 
 		LanguageReader.loadEntries(currentFile);
+		
+		registerRecipes(currentConfig);
 
 		// Continuous
 		new EffectHandler.EffectContinuousRunnable().runTaskTimer(treeWarp, 20,

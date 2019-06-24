@@ -1,15 +1,10 @@
 package com.dreamless.treewarp;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.RecipeChoice.MaterialChoice;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.dreamless.laithorn.LaithornUtils;
@@ -115,59 +110,5 @@ public class CustomRecipes {
 		item = nbti.getItem();
 
 		return item;
-	}
-
-	private static ShapedRecipe shearsRecipe() {
-		ItemStack shears = shearsItem();
-
-		NamespacedKey key = new NamespacedKey(TreeWarp.treeWarp, "magicked_shears");
-
-		ShapedRecipe recipe = new ShapedRecipe(key, shears);
-
-		recipe.shape("EEE", "ESE", "EEE");
-		recipe.setIngredient('E', Material.FLINT);
-		recipe.setIngredient('S', Material.SHEARS);
-
-		return recipe;
-	}
-
-	private static ShapedRecipe spawnLeafRecipe() {
-
-		ItemStack leaf = spawnLeafItem();
-
-		NamespacedKey key = new NamespacedKey(TreeWarp.treeWarp, "laithorn_leaf");
-
-		ShapedRecipe recipe = new ShapedRecipe(key, leaf);
-
-		recipe.shape("EEE", "ELE", "EEE");
-		recipe.setIngredient('E', Material.FLINT);
-		
-		ArrayList<Material> leaves = new ArrayList<Material>();
-		leaves.add(Material.BIRCH_LEAVES);
-		leaves.add(Material.OAK_LEAVES);
-		leaves.add(Material.DARK_OAK_LEAVES);
-		leaves.add(Material.JUNGLE_LEAVES);
-		leaves.add(Material.ACACIA_LEAVES);
-		leaves.add(Material.SPRUCE_LEAVES);
-
-		MaterialChoice choices = new MaterialChoice(leaves);
-		recipe.setIngredient('L', choices);
-
-		return recipe;
-
-	}
-	
-	private static ShapelessRecipe bonemealRecipe() {
-		
-		ItemStack bonemeal = magicBonemealItem();
-
-		NamespacedKey key = new NamespacedKey(TreeWarp.treeWarp, "magicked_bonemeal");
-
-		ShapelessRecipe recipe = new ShapelessRecipe(key, bonemeal);
-
-		recipe.addIngredient(Material.FLINT);
-		recipe.addIngredient(Material.BONE_MEAL);
-
-		return recipe;
 	}
 }
