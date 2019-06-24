@@ -3,6 +3,7 @@ package com.dreamless.treewarp;
 import java.io.File;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -10,12 +11,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.dreamless.laithorn.api.LaithornRegister;
+import com.dreamless.laithorn.api.RecipeType;
 import com.dreamless.treewarp.listeners.BlockListener;
 import com.dreamless.treewarp.listeners.CommandListener;
-import com.dreamless.treewarp.listeners.CraftingBenchListener;
 import com.mysql.jdbc.Connection;
-
-import com.dreamless.laithorn.api.RequirementsHandler;
 
 public class TreeWarp extends JavaPlugin {
 
@@ -33,7 +33,7 @@ public class TreeWarp extends JavaPlugin {
 
 	// Listeners
 	public BlockListener blockListener;
-	public CraftingBenchListener craftListener;
+	// public CraftingBenchListener craftListener;
 
 	// debug
 	public static boolean debug;
@@ -81,14 +81,12 @@ public class TreeWarp extends JavaPlugin {
 
 		// Listeners
 		blockListener = new BlockListener();
-		craftListener = new CraftingBenchListener();
+		// craftListener = new CraftingBenchListener();
 		getCommand("TreeWarp").setExecutor(new CommandListener());
 
 		treeWarp.getServer().getPluginManager().registerEvents(blockListener, treeWarp);
-		treeWarp.getServer().getPluginManager().registerEvents(craftListener, treeWarp);
-
-		// Custom Recipes
-		CustomRecipes.registerRecipes();
+		// treeWarp.getServer().getPluginManager().registerEvents(craftListener,
+		// treeWarp);
 
 		PlayerMessager.log(this.getDescription().getName() + " enabled!");
 	}
@@ -151,15 +149,8 @@ public class TreeWarp extends JavaPlugin {
 		// Balancing
 		BlockListener.durabilityLoss = currentConfig.getInt("shearsusecost", 1);
 		TeleportHandler.DISTANCE = currentConfig.getDouble("distancesquared", 4);
-		RequirementsHandler.registerRecipe(CustomRecipes.SHEARS_CREATE_STRING,
-				currentConfig.getInt("shears_create_level", 0));
-		RequirementsHandler.registerRecipe(CustomRecipes.BONEMEAL_CREATE_STRING,
-				currentConfig.getInt("bonemeal_create_level", 0));
-
-		RequirementsHandler.registerItemRepair(Material.SHEARS, currentConfig.getInt("shears_repair_level", 0),
-				currentConfig.getInt("shears_repair_exp", 3), currentConfig.getInt("shears_repair_rate", 50), true,
-				null);
-
+		
+		registerRecipes(currentConfig);
 
 		/*** text.yml ***/
 		currentFile = new File(treeWarp.getDataFolder(), "text.yml");
@@ -193,7 +184,38 @@ public class TreeWarp extends JavaPlugin {
 
 	public static String getDatabase() {
 		return development ? testdatabase : database;
-
+	}
+	
+	private static void registerRecipes(FileConfiguration currentConfig) {
+		
+		// Magic Bonemeal
+		LaithornRegister.registerItemCrafting(CustomRecipes.magicBonemealItem(), Material.BONE_MEAL,
+				currentConfig.getInt("bonemeal_create_level", 0), currentConfig.getInt("bonemeal_create_exp", 10),
+				RecipeType.ONE_FRAGMENT, null, "magicked_bonemeal", treeWarp);
+		
+		// Magic Shears
+		LaithornRegister.registerItemCrafting(CustomRecipes.shearsItem(), Material.SHEARS,
+				currentConfig.getInt("shears_create_level", 0), currentConfig.getInt("shears_create_exp", 10),
+				RecipeType.CENTERED, null, "magicked_shears", treeWarp);
+		
+		// Laithorn Leaves
+		
+		ArrayList<Material> leaves = new ArrayList<Material>();
+		leaves.add(Material.BIRCH_LEAVES);
+		leaves.add(Material.OAK_LEAVES);
+		leaves.add(Material.DARK_OAK_LEAVES);
+		leaves.add(Material.JUNGLE_LEAVES);
+		leaves.add(Material.ACACIA_LEAVES);
+		leaves.add(Material.SPRUCE_LEAVES);
+		
+		LaithornRegister.registerItemCrafting(CustomRecipes.spawnLeafItem(), leaves,
+				currentConfig.getInt("leaves_create_level", 0), currentConfig.getInt("leaves_create_exp", 10),
+				RecipeType.CENTERED, null, "laithorn_leaf", treeWarp);
+		
+		// Repair Shears
+		LaithornRegister.registerItemRepair(Material.SHEARS, currentConfig.getInt("shears_repair_level", 0),
+				currentConfig.getInt("shears_repair_exp", 3), currentConfig.getInt("shears_repair_rate", 50), true,
+				null);
 	}
 
 }

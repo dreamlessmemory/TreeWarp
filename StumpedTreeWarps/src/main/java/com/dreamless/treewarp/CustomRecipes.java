@@ -3,7 +3,6 @@ package com.dreamless.treewarp;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -14,10 +13,9 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.dreamless.laithorn.LaithornUtils;
-import com.dreamless.laithorn.api.ItemCrafting;
-
-import de.tr7zw.itemnbtapi.NBTCompound;
-import de.tr7zw.itemnbtapi.NBTItem;
+import com.dreamless.laithorn.api.Fragment;
+import com.dreamless.nbtapi.NBTCompound;
+import com.dreamless.nbtapi.NBTItem;
 
 //import com.dreamless.treewarp.TreeWarp;
 
@@ -27,12 +25,6 @@ public class CustomRecipes {
 	public static final String SHEARS_CREATE_STRING = "shears_create";
 	public static final String BONEMEAL_CREATE_STRING = "bonemeal_create";
 	public static List<String> SHEARS_REPAIR_TAGS; 
-
-	public static void registerRecipes() {
-		Bukkit.addRecipe(shearsRecipe());
-		Bukkit.addRecipe(spawnLeafRecipe());
-		Bukkit.addRecipe(bonemealRecipe());
-	}
 
 	public static ItemStack magicBonemealItem() {
 		ItemStack item = new ItemStack(Material.BONE_MEAL);
@@ -55,7 +47,7 @@ public class CustomRecipes {
 		/*** NBT ***/
 		NBTItem nbti = new NBTItem(item);
 
-		NBTCompound laithorn = nbti.addCompound(ItemCrafting.getTopLevelTag());
+		NBTCompound laithorn = nbti.addCompound(Fragment.getTopLevelTag());
 		laithorn.setString("module", "TreeWarp");
 
 		item = nbti.getItem();
@@ -84,7 +76,7 @@ public class CustomRecipes {
 		/*** NBT ***/
 		NBTItem nbti = new NBTItem(item);
 
-		NBTCompound laithorn = nbti.addCompound(ItemCrafting.getTopLevelTag());
+		NBTCompound laithorn = nbti.addCompound(Fragment.getTopLevelTag());
 		laithorn.setString("module", "TreeWarp");
 		nbti.addCompound("TreeWarp");
 
@@ -114,7 +106,7 @@ public class CustomRecipes {
 		/*** NBT ***/
 		NBTItem nbti = new NBTItem(item);
 
-		NBTCompound laithorn = nbti.addCompound(ItemCrafting.getTopLevelTag());
+		NBTCompound laithorn = nbti.addCompound(Fragment.getTopLevelTag());
 		laithorn.setString("module", "TreeWarp");
 		
 		NBTCompound treeWarp = nbti.addCompound("TreeWarp");

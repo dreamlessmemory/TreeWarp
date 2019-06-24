@@ -34,14 +34,6 @@
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 		</repository>
 		<repository>
-			<id>vault-repo</id>
-			<url>http://nexus.hc.to/content/repositories/pub_releases</url>
-		</repository>
-		<repository>
-			<id>filoghost-repo</id>
-			<url>https://ci.filoghost.me/plugin/repository/everything/</url>
-		</repository>
-		<repository>
 			<id>jitpack.io</id>
 			<url>https://jitpack.io</url>
 		</repository>
@@ -56,30 +48,15 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20180813</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.6</version>
-		</dependency>
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.41</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.tr7zw</groupId>
-			<artifactId>Item-NBT-API</artifactId>
-			<version>-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-	    <groupId>com.github.dreamlessmemory</groupId>
+	    	<groupId>com.github.dreamlessmemory</groupId>
 	    	<artifactId>LaithornsGrace</artifactId>
 	    	<version>master-SNAPSHOT</version>
+	    	<exclusions>
+	    		<exclusion>
+	    			<groupId>de.tr7zw</groupId>
+	    			<artifactId>item-nbt-api</artifactId>
+	    		</exclusion>
+	    	</exclusions>
 		</dependency>
 	</dependencies>
 </project>
