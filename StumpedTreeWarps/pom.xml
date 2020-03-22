@@ -34,29 +34,33 @@
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 		</repository>
 		<repository>
-			<id>jitpack.io</id>
-			<url>https://jitpack.io</url>
+			<id>codemc-repo</id>
+			<url>https://repo.codemc.org/repository/maven-public/</url>
 		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.15-R0.1-SNAPSHOT</version><!--change this value depending 
+			<version>1.15.2-R0.1-SNAPSHOT</version><!--change this value depending 
 				on the version -->
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-	    	<groupId>com.github.dreamlessmemory</groupId>
+	    	<groupId>LaithornsGrace</groupId>
 	    	<artifactId>LaithornsGrace</artifactId>
-	    	<version>master-SNAPSHOT</version>
-	    	<exclusions>
-	    		<exclusion>
-	    			<groupId>de.tr7zw</groupId>
-	    			<artifactId>item-nbt-api</artifactId>
-	    		</exclusion>
-	    	</exclusions>
+	    	<version>2.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
+	<distributionManagement>
+        <snapshotRepository>
+            <id>codemc-snapshots</id>
+            <url>https://repo.codemc.org/repository/maven-snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>codemc-releases</id>
+            <url>https://repo.codemc.org/repository/maven-releases</url>
+        </repository>
+    </distributionManagement>
 </project>
