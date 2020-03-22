@@ -12,8 +12,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.dreamless.laithorn.LaithornUtils;
 import com.dreamless.laithorn.api.Fragment;
-import com.dreamless.nbtapi.NBTCompound;
-import com.dreamless.nbtapi.NBTItem;
+
+import de.tr7zw.changeme.nbtapi.NBTCompound;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 
 public class TreeHandler {
 
