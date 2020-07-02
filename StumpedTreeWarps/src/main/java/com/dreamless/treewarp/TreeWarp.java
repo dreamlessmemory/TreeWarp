@@ -15,7 +15,7 @@ import com.dreamless.laithorn.api.LaithornRegister;
 import com.dreamless.laithorn.api.RecipeType;
 import com.dreamless.treewarp.listeners.BlockListener;
 import com.dreamless.treewarp.listeners.CommandListener;
-import com.mysql.jdbc.Connection;
+import java.sql.Connection;
 
 public class TreeWarp extends JavaPlugin {
 

@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.dreamless.StumpedTreeWarps</groupId>
 	<artifactId>StumpedTreeWarps</artifactId>
-	<version>1.1.0-RELEASE</version>
+	<version>1.2.0-RELEASE</version>
 	<name>StumpedTreeWarps</name>
 	<description>A player warp system utilizing trees</description>
 	<build>
@@ -62,20 +62,19 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.15.2-R0.1-SNAPSHOT</version><!--change this value depending 
-				on the version -->
+			<version>1.15.2-R0.1-SNAPSHOT</version><!--change this value depending on the version -->
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 	    	<groupId>com.dreamless.LaithornsGrace</groupId>
 	    	<artifactId>LaithornsGrace</artifactId>
-	    	<version>2.0.0-SNAPSHOT</version>
+	    	<version>2.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>de.tr7zw</groupId>
 			<artifactId>item-nbt-api</artifactId>
-			<version>2.2.0</version>
+			<version>2.4.1</version>
 		</dependency>
 	</dependencies>
 	<distributionManagement>
