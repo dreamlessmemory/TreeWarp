@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.dreamless.StumpedTreeWarps</groupId>
 	<artifactId>StumpedTreeWarps</artifactId>
-	<version>1.2.0-RELEASE</version>
+	<version>1.3.0</version>
 	<name>StumpedTreeWarps</name>
 	<description>A player warp system utilizing trees</description>
 	<build>
@@ -67,9 +67,9 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-	    	<groupId>com.dreamless.LaithornsGrace</groupId>
-	    	<artifactId>LaithornsGrace</artifactId>
-	    	<version>2.1.0</version>
+  			<groupId>com.dreamless.LaithornsGrace</groupId>
+  			<artifactId>LaithornsGrace</artifactId>
+			<version>2.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>de.tr7zw</groupId>
