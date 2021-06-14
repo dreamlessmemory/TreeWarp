@@ -17,27 +17,6 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.2.1</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<relocations>
-								<relocation>
-									<pattern>de.tr7zw.changeme.nbtapi</pattern>
-									<shadedPattern>com.dreamless.nbtapi</shadedPattern>
-								</relocation>
-							</relocations>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
 	<repositories>
@@ -70,11 +49,7 @@
   			<groupId>com.dreamless.LaithornsGrace</groupId>
   			<artifactId>LaithornsGrace</artifactId>
 			<version>2.4.0</version>
-		</dependency>
-		<dependency>
-			<groupId>de.tr7zw</groupId>
-			<artifactId>item-nbt-api</artifactId>
-			<version>2.8.0</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<distributionManagement>

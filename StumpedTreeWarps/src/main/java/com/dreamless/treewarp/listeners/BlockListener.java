@@ -33,8 +33,8 @@ import com.dreamless.treewarp.TeleportHandler;
 import com.dreamless.treewarp.TreeHandler;
 import com.dreamless.treewarp.TreeWarp;
 
-import de.tr7zw.changeme.nbtapi.NBTCompound;
-import de.tr7zw.changeme.nbtapi.NBTItem;
+import com.dreamless.nbtapi.NBTCompound;
+import com.dreamless.nbtapi.NBTItem;
 
 public class BlockListener implements Listener {
 
