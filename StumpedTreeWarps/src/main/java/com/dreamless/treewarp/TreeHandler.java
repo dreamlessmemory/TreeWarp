@@ -22,6 +22,7 @@ public class TreeHandler {
 	public static boolean isPotentialTreeType(TreeType type) {
 		switch (type) {
 		case ACACIA:
+		case AZALEA:
 		case TALL_BIRCH:
 		case BIRCH:
 		case DARK_OAK:
@@ -53,6 +54,8 @@ public class TreeHandler {
 		case DARK_OAK_LOG:
 		case ACACIA_LOG:
 		case SPRUCE_LOG:
+		case AZALEA_LEAVES:
+		case FLOWERING_AZALEA_LEAVES:
 			return true;
 		default:
 			return false;
@@ -67,6 +70,8 @@ public class TreeHandler {
 		case DARK_OAK_LEAVES:
 		case ACACIA_LEAVES:
 		case SPRUCE_LEAVES:
+		case AZALEA_LEAVES:
+		case FLOWERING_AZALEA_LEAVES:
 			return true;
 		default:
 			return false;
@@ -93,6 +98,10 @@ public class TreeHandler {
 		case SPRUCE_LEAVES:
 		case SPRUCE_LOG:
 			return Material.SPRUCE_LEAVES;
+		case AZALEA_LEAVES:
+			return Material.AZALEA_LEAVES;
+		case FLOWERING_AZALEA_LEAVES:
+			return Material.FLOWERING_AZALEA_LEAVES;
 		default:
 			return Material.OAK_LEAVES;
 		}
