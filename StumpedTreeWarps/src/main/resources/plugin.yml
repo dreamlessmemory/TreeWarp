@@ -1,8 +1,8 @@
 name: StumpedTreeWarp
-version: 1.5.0
+version: 1.5.1
 description: Create special trees allow players to warp
 main: com.dreamless.treewarp.TreeWarp
-api-version: 1.18
+api-version: 1.19
 authors: [DreamlessMemory/MemoryReborn]
 prefix: TreeWarp
 depend: [LaithornsGrace]
