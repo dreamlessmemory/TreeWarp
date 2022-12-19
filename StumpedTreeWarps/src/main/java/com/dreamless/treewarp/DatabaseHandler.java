@@ -22,10 +22,17 @@ public class DatabaseHandler {
 		try (PreparedStatement stmt = TreeWarp.connection.prepareStatement(query)) {
 			ResultSet result = stmt.executeQuery();
 			while (result.next()) {
-				Location rootLocation = LaithornUtils.deserializeLocation(result.getString("center"));
-				Location leafLocation = LaithornUtils.deserializeLocation(result.getString("location"));
-				leafToRoot.put(leafLocation, rootLocation);
-				PlayerMessager.debugLog("Root: " + rootLocation + " Leaf: " + leafLocation);
+				try
+				{
+					Location rootLocation = LaithornUtils.deserializeLocation(result.getString("center"));
+					Location leafLocation = LaithornUtils.deserializeLocation(result.getString("location"));
+					leafToRoot.put(leafLocation, rootLocation);
+					PlayerMessager.debugLog("Root: " + rootLocation + " Leaf: " + leafLocation);
+				}
+				catch (IllegalArgumentException e)
+				{
+					PlayerMessager.log("Unable to add tree at: " + result.getString("center"));
+				}
 			}
 
 		} catch (SQLException e) {
