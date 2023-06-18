@@ -65,7 +65,7 @@ public class BlockListener implements Listener {
 
 		NBTItem nbti = new NBTItem(inHand);
 
-		if (!nbti.hasKey("Laithorn"))
+		if (!nbti.hasTag("Laithorn"))
 			return;
 
 		if (!player.hasPermission("treewarp.user")) {
@@ -107,7 +107,7 @@ public class BlockListener implements Listener {
 		ItemStack item = player.getInventory().getItemInMainHand();
 		if (item.getType() == Material.SHEARS) {
 			NBTItem nbti = new NBTItem(item);
-			if (nbti.hasKey("TreeWarp")) {
+			if (nbti.hasTag("TreeWarp")) {
 				// PlayerMessager.debugLog("Leaf harvesting");
 				harvestingLeaves = true;
 				ItemMeta itemMeta = item.getItemMeta();
@@ -180,7 +180,7 @@ public class BlockListener implements Listener {
 		}
 
 		NBTItem nbti = new NBTItem(itemStack);
-		if (!nbti.hasKey(Fragment.getTopLevelTag()) || !nbti.hasKey("TreeWarp")) {
+		if (!nbti.hasTag(Fragment.getTopLevelTag()) || !nbti.hasTag("TreeWarp")) {
 			// PlayerMessager.debugLog("Not warp leaf");
 			return;
 		} // else PlayerMessager.debugLog("Nope?");
@@ -199,7 +199,7 @@ public class BlockListener implements Listener {
 		NBTCompound treeWarp = nbti.getCompound("TreeWarp");
 
 		Location destination;
-		boolean spawn = treeWarp.hasKey("spawn");
+		boolean spawn = treeWarp.hasTag("spawn");
 		if (spawn) {
 			destination = TeleportHandler.getSpawnWarpDestination();
 			if (destination == null) {
@@ -232,7 +232,7 @@ public class BlockListener implements Listener {
 
 		// Delayed handlers
 		new EffectHandler.EffectRunnable(player.getLocation(), 60, 1, "ready").runTaskTimer(TreeWarp.treeWarp, 0, 1);
-		new TeleportHandler(event.getPlayer(), destination, player.getLocation(), treeWarp.hasKey("spawn"),
+		new TeleportHandler(event.getPlayer(), destination, player.getLocation(), treeWarp.hasTag("spawn"),
 				treeWarp.getString("player")).runTaskLater(TreeWarp.treeWarp, 60);
 	}
 }
