@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.dreamless.StumpedTreeWarps</groupId>
 	<artifactId>StumpedTreeWarps</artifactId>
-	<version>1.5.6</version>
+	<version>1.6.0</version>
 	<name>StumpedTreeWarps</name>
 	<description>A player warp system utilizing trees</description>
 	<properties>

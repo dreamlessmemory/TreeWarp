@@ -25,6 +25,10 @@ public class TreeHandler {
 		case AZALEA:
 		case TALL_BIRCH:
 		case BIRCH:
+		case CHERRY:
+		case MANGROVE:
+		case WARPED_FUNGUS:
+		case CRIMSON_FUNGUS:
 		case DARK_OAK:
 		case SMALL_JUNGLE:
 		case JUNGLE:
